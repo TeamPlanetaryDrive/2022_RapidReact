@@ -1,4 +1,4 @@
-# InfiniteRecharge-2020
+# InfiniteRecharge-2022
 
 This is the readme for our team's effort to program for this competition. 
 
