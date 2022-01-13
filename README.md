@@ -1,8 +1,9 @@
-# InfiniteRecharge-2022
+# RapidReact 2022
 
 This is the readme for our team's effort to program for this competition. 
 
-This year we are working on getting a robo working with the Infinite Recharge ruleset
+This year we are working on getting a functional robot to lob balls.
 
 main goals:
- + TBD
+ + fix deprecated library references
+ + tbd
