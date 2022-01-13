@@ -9,7 +9,7 @@ package frc.robot.subsystems;
 
 
 import edu.wpi.first.cameraserver.*;
-import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 //use for the guidence through the camera
@@ -17,12 +17,12 @@ public class Vision extends SubsystemBase {
 
   public void init(){
     // // Axis camera (fixed IP)
-    // AxisCamera aCamera = CameraServer.getInstance().addAxisCamera("10.28.56.10");
+    // AxisCamera aCamera = CameraServer.addAxisCamera("10.28.56.10");
 		// aCamera.setFPS(15);
 		// aCamera.setResolution(RobotMap.CAMERA_RESOLUTION_WIDTH, RobotMap.CAMERA_RESOLUTION_HEIGHT);
 
 		// USB camera (default = 0)
-		UsbCamera uCamera = CameraServer.getInstance().startAutomaticCapture();
+		UsbCamera uCamera = CameraServer.startAutomaticCapture();
 		uCamera.setFPS(15);
 		uCamera.setResolution(320, 240);
   }
