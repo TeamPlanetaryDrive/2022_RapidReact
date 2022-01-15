@@ -6,9 +6,11 @@
 /*----------------------------------------------------------------------------*/
 package frc.robot;
 
+/* unused
 import frc.robot.commands.auto.*;
-//import frc.robot.commands.barrier.*; unused
+import frc.robot.commands.barrier.*; 
 import frc.robot.commands.*;
+*/
 
 /**
  * This class is what binds the controls on the physical operator
