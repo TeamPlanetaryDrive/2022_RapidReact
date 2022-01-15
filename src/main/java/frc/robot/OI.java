@@ -7,7 +7,7 @@
 package frc.robot;
 
 import frc.robot.commands.auto.*;
-import frc.robot.commands.barrier.*;
+//import frc.robot.commands.barrier.*; unused
 import frc.robot.commands.*;
 
 /**

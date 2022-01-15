@@ -7,7 +7,7 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
@@ -47,11 +47,11 @@ public class DriveTrain extends SubsystemBase {
     return robotDrive;
   }
 
-  public SpeedController getSPRight() {
+  public MotorController getSPRight() {
     return RobotMap.rMotor;
   }
 
-  public SpeedController getSPLeft() {
+  public MotorController getSPLeft() {
     return RobotMap.lMotor;
   }
 

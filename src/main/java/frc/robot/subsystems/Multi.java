@@ -8,8 +8,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.DoubleSolenoid;//new
-import frc.robot.RobotMap;//new
+//import edu.wpi.first.wpilibj.DoubleSolenoid;//new unused
+//import frc.robot.RobotMap;//new unused
 
 /**
  * Add your docs here.

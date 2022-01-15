@@ -10,11 +10,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 // import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
@@ -64,7 +65,7 @@ public class RobotMap {
         // HARDWARE
         // motors
         public static Victor lMotor, rMotor;
-        public static SpeedController lift;
+        public static MotorController lift;
 
         // state for lift motor
         public static boolean liftStart = false;
@@ -147,6 +148,6 @@ public class RobotMap {
                 barrierL = new Servo(GATE_SERVO_CHANNEL_1);
                 barrierR = new Servo(GATE_SERVO_CHANNEL_2);
 
-                framePiston = new DoubleSolenoid(SHOOTER_PISTON_CHANNEL_FORWARD, SHOOTER_PISTON_CHANNEL_REVERSE);
+                framePiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,SHOOTER_PISTON_CHANNEL_FORWARD, SHOOTER_PISTON_CHANNEL_REVERSE);
         }
 }

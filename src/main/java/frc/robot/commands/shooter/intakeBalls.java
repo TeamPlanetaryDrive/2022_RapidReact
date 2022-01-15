@@ -8,9 +8,11 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+/* unused
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+*/
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
