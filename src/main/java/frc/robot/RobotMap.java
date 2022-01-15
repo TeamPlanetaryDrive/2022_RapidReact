@@ -111,20 +111,24 @@ public class RobotMap {
                 rMotor = new Victor(RIGHT_MOTOR_CHANNEL);
 
                 // initializing buttons on left joystick
+                /* it's shitting
                 button1_left = new JoystickButton(leftJoystick, 1);
                 button2_left = new JoystickButton(leftJoystick, 2);
                 button3_left = new JoystickButton(leftJoystick, 3);
                 button4_left = new JoystickButton(leftJoystick, 4);
                 button5_left = new JoystickButton(leftJoystick, 5);
+                */
                 button8_left = new JoystickButton(leftJoystick, 8);
                 button9_left = new JoystickButton(leftJoystick, 9);
 
                 // initializing buttons on right joystick
+                /*
                 button1_right = new JoystickButton(rightJoystick, 1);
                 button2_right = new JoystickButton(rightJoystick, 2);
                 button3_right = new JoystickButton(rightJoystick, 3);
                 button4_right = new JoystickButton(rightJoystick, 4);
                 button5_right = new JoystickButton(rightJoystick, 5);
+                */
                 button8_right = new JoystickButton(rightJoystick, 8);
 
                 // lift encoder and motor setup
@@ -136,18 +140,19 @@ public class RobotMap {
                 lift.setInverted(true);
                 
                 //New stuff
-                climbL = new Victor(CLIMB_MOTOR_CHANNEL_1);
+                /*climbL = new Victor(CLIMB_MOTOR_CHANNEL_1);
                 climbR = new Victor(CLIMB_MOTOR_CHANNEL_2);
                 shootL = new Victor(SHOOTER_MOTOR_CHANNEL_1);
                 shootR = new Victor(SHOOTER_MOTOR_CHANNEL_2);
                 windowMotor = new Victor(WINDOW_MOTOR_CHANNEL);
                 climbEncoder = new Encoder(CLIMB_ENCODER_CHANNEL_A, CLIMB_ENCODER_CHANNEL_B);
-                // climbEncoder.setDistancePerPulse(0);
+                climbEncoder.setDistancePerPulse(0);
                 frameEncoder = new Encoder(FRAME_ENCODER_CHANNEL_A, FRAME_ENCODER_CHANNEL_B);
 
                 barrierL = new Servo(GATE_SERVO_CHANNEL_1);
                 barrierR = new Servo(GATE_SERVO_CHANNEL_2);
 
                 framePiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,SHOOTER_PISTON_CHANNEL_FORWARD, SHOOTER_PISTON_CHANNEL_REVERSE);
+                */
         }
 }

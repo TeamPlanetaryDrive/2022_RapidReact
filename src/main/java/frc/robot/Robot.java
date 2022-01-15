@@ -150,7 +150,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    Robot.Drive.drive(-0.7 * RobotMap.leftJoystick.getY(), -0.7 * RobotMap.rightJoystick.getY());
+    Robot.Drive.drive(-0.4 * RobotMap.leftJoystick.getY(), 0.4 * RobotMap.rightJoystick.getY());
+    // why is code shit Robot.Drive.drive(0.5*RobotMap.rightJoystick.getX(),0.5*RobotMap.rightJoystick.getX());
     CommandScheduler.getInstance().run();
   }
 
