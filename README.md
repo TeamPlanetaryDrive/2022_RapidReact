@@ -7,6 +7,3 @@ This year we are working on getting a functional robot to lob balls.
 main goals:
  + make robot good
  + tbd
-
-to do:
- + fix deprecated library reference
