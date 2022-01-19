@@ -148,11 +148,17 @@ public class Robot extends TimedRobot {
   /**
    * This function is called periodically during operator control.
    */
+  int countingStinky = 0;
   @Override
   public void teleopPeriodic() {
     Robot.Drive.drive(-0.4 * RobotMap.leftJoystick.getY(), 0.4 * RobotMap.rightJoystick.getY());
     // why is code shit Robot.Drive.drive(0.5*RobotMap.rightJoystick.getX(),0.5*RobotMap.rightJoystick.getX());
+    if(countingStinky % 50 == 0) 
+    {
+      System.out.println("yoooo we on: " + countingStinky);
+    }
     CommandScheduler.getInstance().run();
+    countingStinky++;
   }
 
   /**
