@@ -6,11 +6,7 @@
 /*----------------------------------------------------------------------------*/
 package frc.robot;
 
-/* unused
-import frc.robot.commands.auto.*;
-import frc.robot.commands.barrier.*; 
 import frc.robot.commands.*;
-*/
 
 /**
  * This class is what binds the controls on the physical operator
@@ -37,5 +33,6 @@ public class OI {
     RobotMap.button9_right.whenPressed(new releaseBallRight());
     friccaroo
     */
+    RobotMap.button3_right.whenPressed(new takePicture());
   }
 }
