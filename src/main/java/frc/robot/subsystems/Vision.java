@@ -26,7 +26,7 @@ public class Vision extends SubsystemBase {
 		// aCamera.setResolution(RobotMap.CAMERA_RESOLUTION_WIDTH, RobotMap.CAMERA_RESOLUTION_HEIGHT);
 
 		// USB camera (default = 0)
-		UsbCamera uCamera = CameraServer.startAutomaticCapture();
+		/*UsbCamera uCamera = CameraServer.startAutomaticCapture();
 		uCamera.setFPS(15);
 		uCamera.setResolution(320, 240);
 		CvSink cvSink = CameraServer.getVideo();
@@ -41,6 +41,6 @@ public class Vision extends SubsystemBase {
 			}
 			Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
 			outputStream.putFrame(output);
-  		}
+  		}*/
   	}
 }

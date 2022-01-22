@@ -129,6 +129,7 @@ public class RobotMap {
                 button4_right = new JoystickButton(rightJoystick, 4);
                 button5_right = new JoystickButton(rightJoystick, 5);
                 */
+                button3_right = new JoystickButton(rightJoystick, 3);
                 button8_right = new JoystickButton(rightJoystick, 8);
 
                 // lift encoder and motor setup
