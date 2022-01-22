@@ -40,6 +40,7 @@ public class Vision extends SubsystemBase {
 		  Scalar ub = new Scalar(255.0,255.0,255.0);
 		  Core.inRange(source, lb, ub, output);
 		  Imgproc.cvtColor(output, output, Imgproc.COLOR_BGR2GRAY);
+		  Imgproc.threshold(output, output, 100.0, 200.0, 0);
 		  outputStream.putFrame(output);
 		}
 	  }).start();
