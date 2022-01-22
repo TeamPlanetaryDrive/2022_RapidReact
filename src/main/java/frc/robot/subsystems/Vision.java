@@ -21,7 +21,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 //use for the guidence through the camera
 public class Vision extends SubsystemBase {
-	
+
 	NetworkTableEntry totalEntry;
 
 	public void init(){
@@ -43,9 +43,7 @@ public class Vision extends SubsystemBase {
 			Scalar k = new Scalar(255.0,255.0,255.0);
 			Size s = new Size(3.0, 3.0);
 			Mat kerny = new Mat(s, CvType.CV_8UC1, k);
-			System.out.println("vision");
 			while(!Thread.interrupted()) {
-				System.out.println(" wa ");
 			  if (cvSink.grabFrame(source) == 0) {
 				continue;
 			  }
