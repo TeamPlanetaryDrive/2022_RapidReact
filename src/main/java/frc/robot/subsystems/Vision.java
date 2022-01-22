@@ -28,7 +28,7 @@ public class Vision extends SubsystemBase {
 		// get entries from NetworkTable
 		NetworkTableInstance inst = NetworkTableInstance.getDefault();
       	NetworkTable table = inst.getTable("datatable");
-      	totalEntry = table.getEntry("ToTaL");
+      	totalEntry = table.getEntry("Top Left Pixel");
 
 		// create vision thread and camera feed
 		new Thread(() -> {
@@ -49,12 +49,12 @@ public class Vision extends SubsystemBase {
 			  }
 			  Scalar lb = new Scalar(100.0,100.0,100.0);
 			  Scalar ub = new Scalar(255.0,255.0,255.0);
-			  Core.inRange(source, lb, ub, output);
-			  Imgproc.dilate(output, output, kerny);
+			  //Core.inRange(source, lb, ub, output);
+			  //Imgproc.dilate(output, output, kerny);
 			  //Imgproc.cvtColor(output, output, Imgproc.COLOR_BGR2GRAY);
 			  //Imgproc.threshold(source, output, 170.0, 255.0, 0);
 			  
-			  totalEntry.setDouble(output.total());
+			  totalEntry.setDoubleArray(output.get(0,0));
 
 			  outputStream.putFrame(output);
 			}
