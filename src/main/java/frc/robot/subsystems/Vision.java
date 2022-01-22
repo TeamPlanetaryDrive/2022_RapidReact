@@ -53,13 +53,15 @@ public class Vision extends SubsystemBase {
 		Size s = new Size(size, size);
 		return new Mat(s,CvType.CV_8UC1,k);
 	}
-	public Mat redBall(Mat source) {
-		Scalar lb = new Scalar(0.0,0.0,125.0);
-		Scalar ub = new Scalar(125.0,125.0,255.0);
+	public Mat redBall(Mat out) {
+		Scalar lb = new Scalar(32.0,28.0,96.0);
+		Scalar ub = new Scalar(50.0,50.0,155.0);
 		Mat kerny = makeKernel(3);
-		Mat out = new Mat();
-		Core.inRange(source, lb, ub, out);
-		Imgproc.dilate(out, out, kerny);
+		//Imgproc.cvtColor(out, out, Imgproc.COLOR_BGR2HSV);
+		Core.inRange(out, lb, ub, out);
+		Imgproc.erode(out,out,kerny);
+		Imgproc.dilate(out,out,makeKernel(6));
+		Imgproc.erode(out,out,kerny);
 		totalEntry.setDoubleArray(out.get(0,0));
 		return out;
 	}
