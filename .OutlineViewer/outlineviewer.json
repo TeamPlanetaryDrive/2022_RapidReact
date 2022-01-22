@@ -7,5 +7,8 @@
   },
   "NetworkTables Settings": {
     "mode": "Client"
+  },
+  "datatable": {
+    "open": true
   }
 }

@@ -29,7 +29,12 @@ public class takePicture extends CommandBase {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("datatable");
     totalEntry = table.getEntry("Top Left Pixel");
-    System.out.println(totalEntry.getDoubleArray(new double[] {}));
+    double[] bobert = totalEntry.getDoubleArray(new double[] {});
+    System.out.print("[");
+    for(int i = 0; i < bobert.length; i++) {
+      System.out.print(bobert[i] + " ");
+    }
+    System.out.println("]");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
