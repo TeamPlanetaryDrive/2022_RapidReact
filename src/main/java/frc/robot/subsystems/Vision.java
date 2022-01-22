@@ -30,8 +30,9 @@ public class Vision extends SubsystemBase {
   
 		Mat source = new Mat();
 		Mat output = new Mat();
-  
+		System.out.println("vision");
 		while(!Thread.interrupted()) {
+			System.out.println(" wa ");
 		  if (cvSink.grabFrame(source) == 0) {
 			continue;
 		  }
