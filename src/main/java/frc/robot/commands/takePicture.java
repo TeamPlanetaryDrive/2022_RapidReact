@@ -8,10 +8,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class takePicture extends CommandBase {
 
-    private int count = 0;
+  private int count = 0;
+  NetworkTableEntry totalEntry;
 
   public takePicture() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -22,6 +26,9 @@ public class takePicture extends CommandBase {
   @Override
   public void initialize() {
     System.out.println("initialized takePicture");
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    NetworkTable table = inst.getTable("datatable");
+    totalEntry = table.getEntry("ToTaL");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
