@@ -53,7 +53,7 @@ public class Vision extends SubsystemBase {
 			  //Imgproc.dilate(output, output, kerny);
 			  //Imgproc.cvtColor(output, output, Imgproc.COLOR_BGR2GRAY);
 			  //Imgproc.threshold(source, output, 170.0, 255.0, 0);
-			  
+			  output = source;
 			  totalEntry.setDoubleArray(output.get(0,0));
 
 			  outputStream.putFrame(output);
