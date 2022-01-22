@@ -20,27 +20,23 @@ import org.opencv.imgproc.Imgproc;
 public class Vision extends SubsystemBase {
 
   public void init(){
-    // // Axis camera (fixed IP)
-    // AxisCamera aCamera = CameraServer.addAxisCamera("10.28.56.10");
-		// aCamera.setFPS(15);
-		// aCamera.setResolution(RobotMap.CAMERA_RESOLUTION_WIDTH, RobotMap.CAMERA_RESOLUTION_HEIGHT);
-
-		// USB camera (default = 0)
-		/*UsbCamera uCamera = CameraServer.startAutomaticCapture();
-		uCamera.setFPS(15);
-		uCamera.setResolution(320, 240);
+	new Thread(() -> {
+		UsbCamera camera = CameraServer.startAutomaticCapture();
+		camera.setResolution(640, 480);
+  
 		CvSink cvSink = CameraServer.getVideo();
-      	CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
-
-      	Mat source = new Mat();
-      	Mat output = new Mat();
-
+		CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
+  
+		Mat source = new Mat();
+		Mat output = new Mat();
+  
 		while(!Thread.interrupted()) {
-			if (cvSink.grabFrame(source) == 0) {
+		  if (cvSink.grabFrame(source) == 0) {
 			continue;
-			}
-			Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
-			outputStream.putFrame(output);
-  		}*/
+		  }
+		  Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+		  outputStream.putFrame(output);
+		}
+	  }).start();
   	}
 }
