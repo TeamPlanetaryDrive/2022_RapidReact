@@ -35,6 +35,8 @@ public class takePicture extends CommandBase {
       System.out.print(bobert[i] + " ");
     }
     System.out.println("]");
+
+    Robot.Cameras.saveImage("2022_RapidReact/Pictures/ballimg.jpg");
   }
 
   // Called every time the scheduler runs while the command is scheduled.

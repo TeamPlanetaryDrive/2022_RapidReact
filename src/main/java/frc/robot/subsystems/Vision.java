@@ -15,6 +15,7 @@ import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.imgcodecs.Imgcodecs;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -22,6 +23,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 //use for the guidence through the camera
 public class Vision extends SubsystemBase {
 
+	CvSink cvSink;
 	NetworkTableEntry totalEntry;
 	public void init(){
 		// get entries from NetworkTable
@@ -34,7 +36,7 @@ public class Vision extends SubsystemBase {
 			UsbCamera camera = CameraServer.startAutomaticCapture();
 			camera.setResolution(640, 480);
 	  
-			CvSink cvSink = CameraServer.getVideo();
+			cvSink = CameraServer.getVideo();
 			CvSource balling = CameraServer.putVideo("We Balling", 640, 480);
 	  
 			Mat source = new Mat();
@@ -48,6 +50,15 @@ public class Vision extends SubsystemBase {
 			}
 		  }).start();
   	}
+
+	public void saveImage(String filename){
+		Mat source = new Mat();
+		if(cvSink!=null){
+			cvSink.grabFrame(source);
+			Imgcodecs.imwrite(filename,source);
+		}
+	}
+
 	public Mat makeKernel(int size) {
 		Scalar k = new Scalar(255.0,255.0,255.0);
 		Size s = new Size(size, size);
@@ -64,5 +75,6 @@ public class Vision extends SubsystemBase {
 		Imgproc.erode(out,out,kerny);
 		totalEntry.setDoubleArray(out.get(0,0));
 		return out;
+
 	}
 }
