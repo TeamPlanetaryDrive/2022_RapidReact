@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
 import org.opencv.core.*;
-import org.opencv.core.Core;
 import org.opencv.imgproc.Imgproc;
 
 //use for the guidence through the camera
@@ -30,6 +29,9 @@ public class Vision extends SubsystemBase {
   
 		Mat source = new Mat();
 		Mat output = new Mat();
+		Scalar k = new Scalar(255.0,255.0,255.0);
+		Size s = new Size(3.0, 3.0);
+		Mat kerny = new Mat(s, CvType.CV_8UC1, k);
 		System.out.println("vision");
 		while(!Thread.interrupted()) {
 			System.out.println(" wa ");
@@ -39,8 +41,9 @@ public class Vision extends SubsystemBase {
 		  Scalar lb = new Scalar(100.0,100.0,100.0);
 		  Scalar ub = new Scalar(255.0,255.0,255.0);
 		  Core.inRange(source, lb, ub, output);
-		  Imgproc.cvtColor(output, output, Imgproc.COLOR_BGR2GRAY);
-		  Imgproc.threshold(output, output, 100.0, 200.0, 0);
+		  Imgproc.dilate(output, output, kerny);
+		  //Imgproc.cvtColor(output, output, Imgproc.COLOR_BGR2GRAY);
+		  //Imgproc.threshold(source, output, 170.0, 255.0, 0);
 		  outputStream.putFrame(output);
 		}
 	  }).start();
