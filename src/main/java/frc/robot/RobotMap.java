@@ -74,7 +74,7 @@ public class RobotMap {
         // joystick variables
         public static final int LEFT_JOYSTICK_PORT = 0, RIGHT_JOYSTICK_PORT = 1;
         public static final Joystick leftJoystick = new Joystick(LEFT_JOYSTICK_PORT),
-                        rightJoystick = new Joystick(RIGHT_JOYSTICK_PORT);
+                rightJoystick = new Joystick(RIGHT_JOYSTICK_PORT);
         public static final int XBOX_PORT = 2;
         public static final XboxController XController = new XboxController(XBOX_PORT);
         public static JoystickButton button1_left, button2_left, button3_left, button4_left, button5_left, button8_left, button9_left;

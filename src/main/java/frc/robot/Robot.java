@@ -151,7 +151,17 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //Robot.Drive.drive(-0.4 * RobotMap.leftJoystick.getY(), 0.4 * RobotMap.rightJoystick.getY());
-    Robot.Drive.drive(-0.4 * RobotMap.XController.getLeftY(), 0.4 * RobotMap.XController.getLeftX());
+    double left = 0.0;
+    double right = 0.0;
+    double thrustlvl = 0.6;
+    if(RobotMap.XController.getRightX() <= 0) {
+      left = RobotMap.XController.getLeftY() * RobotMap.XController.getRightX()*thrustlvl*2;
+    }
+    if(RobotMap.XController.getRightX() > 0) {
+      right = RobotMap.XController.getLeftY() * RobotMap.XController.getRightX()*thrustlvl*2;
+    }
+    Robot.Drive.drive(-1*thrustlvl * RobotMap.XController.getLeftY() - left, thrustlvl * RobotMap.XController.getLeftY() - right);
+    System.out.println("LeftY: " + RobotMap.XController.getLeftY() + "RightX: " + RobotMap.XController.getRightX());
     CommandScheduler.getInstance().run();
   }
 
