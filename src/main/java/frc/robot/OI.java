@@ -33,6 +33,8 @@ public class OI {
     RobotMap.button9_right.whenPressed(new releaseBallRight());
     friccaroo
     */
-    RobotMap.button3_right.whenPressed(new takePicture());
+    if(RobotMap.XController.getYButtonPressed()) {
+      new takePicture();
+    }
   }
 }

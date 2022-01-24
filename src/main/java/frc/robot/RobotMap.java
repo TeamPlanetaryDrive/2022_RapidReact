@@ -7,14 +7,16 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Encoder;
+/* logitech attack 3 garbage xbox superiority gang :muscle: :triumph:
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
+*/
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController;
 //import edu.wpi.first.wpilibj.PneumaticsModuleType;
 // import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -72,13 +74,15 @@ public class RobotMap {
         public static boolean liftStart = false;
 
         // joystick variables
+        /* Logitech Attack 3? more like Logitech Sucks 3 B)
         public static final int LEFT_JOYSTICK_PORT = 0, RIGHT_JOYSTICK_PORT = 1;
         public static final Joystick leftJoystick = new Joystick(LEFT_JOYSTICK_PORT),
                 rightJoystick = new Joystick(RIGHT_JOYSTICK_PORT);
-        public static final int XBOX_PORT = 2;
-        public static final XboxController XController = new XboxController(XBOX_PORT);
         public static JoystickButton button1_left, button2_left, button3_left, button4_left, button5_left, button8_left, button9_left;
         public static JoystickButton button1_right, button2_right, button3_right, button4_right, button5_right, button8_right;
+        */
+        public static final int XBOX_PORT = 2;
+        public static final XboxController XController = new XboxController(XBOX_PORT);
 
 
 
@@ -120,9 +124,10 @@ public class RobotMap {
                 button3_left = new JoystickButton(leftJoystick, 3);
                 button4_left = new JoystickButton(leftJoystick, 4);
                 button5_left = new JoystickButton(leftJoystick, 5);
-                */
+
                 button8_left = new JoystickButton(leftJoystick, 8);
                 button9_left = new JoystickButton(leftJoystick, 9);
+                */
 
                 // initializing buttons on right joystick
                 /*
@@ -131,17 +136,18 @@ public class RobotMap {
                 button3_right = new JoystickButton(rightJoystick, 3);
                 button4_right = new JoystickButton(rightJoystick, 4);
                 button5_right = new JoystickButton(rightJoystick, 5);
+
+                //button3_right = new JoystickButton(rightJoystick, 3);
+                //button8_right = new JoystickButton(rightJoystick, 8);
                 */
-                button3_right = new JoystickButton(rightJoystick, 3);
-                button8_right = new JoystickButton(rightJoystick, 8);
 
                 // lift encoder and motor setup
                 // liftEncoder = new Encoder(LIFT_ENC_CHANNEL_A, LIFT_ENC_CHANNEL_B);
                 // liftEncoder.setDistancePerPulse(distancePerPulse);
                 // liftEncoder.reset();
                 // liftEncoder.setReverseDirection(true);
-                lift = new Spark(LIFT_CHANNEL);
-                lift.setInverted(true);
+                //lift = new Spark(LIFT_CHANNEL);
+                //lift.setInverted(true);
                 
                 //New stuff
                 /*climbL = new Victor(CLIMB_MOTOR_CHANNEL_1);
