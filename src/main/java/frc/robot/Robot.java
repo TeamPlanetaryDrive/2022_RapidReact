@@ -154,14 +154,16 @@ public class Robot extends TimedRobot {
     double left = 0.0;
     double right = 0.0;
     double thrustlvl = 0.6;
-    if(RobotMap.XController.getRightX() <= 0) {
-      left = RobotMap.XController.getLeftY() * RobotMap.XController.getRightX()*thrustlvl*2;
+    if(RobotMap.XController.getLeftX() <= 0) {
+      left = RobotMap.XController.getLeftX()*thrustlvl;
+      right = left;
     }
-    if(RobotMap.XController.getRightX() > 0) {
-      right = RobotMap.XController.getLeftY() * RobotMap.XController.getRightX()*thrustlvl*2;
+    if(RobotMap.XController.getLeftX() > 0) {
+      right = RobotMap.XController.getLeftX()*thrustlvl;
+      left = right;
     }
-    Robot.Drive.drive(-1*thrustlvl * RobotMap.XController.getLeftY() - left, thrustlvl * RobotMap.XController.getLeftY() - right);
-    System.out.println("LeftY: " + RobotMap.XController.getLeftY() + "RightX: " + RobotMap.XController.getRightX());
+    Robot.Drive.drive(thrustlvl * RobotMap.XController.getLeftY() + left, thrustlvl * RobotMap.XController.getLeftY() + right);
+    System.out.println("LeftY: " + RobotMap.XController.getLeftY() + "RightX: " + RobotMap.XController.getLeftX());
     CommandScheduler.getInstance().run();
   }
 
