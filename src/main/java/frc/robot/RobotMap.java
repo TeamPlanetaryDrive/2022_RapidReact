@@ -116,7 +116,7 @@ public class RobotMap {
                 // initializing motors
                 lMotor = new Victor(LEFT_MOTOR_CHANNEL);
                 rMotor = new Victor(RIGHT_MOTOR_CHANNEL);
-                lMotor.setInverted(true);
+                rMotor.setInverted(true);
                 // initializing buttons on left joystick
                 /* it's shitting
                 button1_left = new JoystickButton(leftJoystick, 1);

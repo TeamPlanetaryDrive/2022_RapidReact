@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
+import java.lang.Math;
 //import frc.robot.OI; unused
 import frc.robot.commands.auto.*;
 
@@ -151,19 +152,14 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //Robot.Drive.drive(-0.4 * RobotMap.leftJoystick.getY(), 0.4 * RobotMap.rightJoystick.getY());
-    double left = 0.0;
-    double right = 0.0;
-    double thrustlvl = 0.6;
-    if(RobotMap.XController.getLeftX() <= 0) {
-      left = RobotMap.XController.getLeftX()*thrustlvl;
-      right = left;
-    }
-    if(RobotMap.XController.getLeftX() > 0) {
-      right = RobotMap.XController.getLeftX()*thrustlvl;
-      left = right;
-    }
-    Robot.Drive.drive(thrustlvl * RobotMap.XController.getLeftY() + left, thrustlvl * RobotMap.XController.getLeftY() + right);
-    System.out.println("LeftY: " + RobotMap.XController.getLeftY() + "RightX: " + RobotMap.XController.getLeftX());
+    double thrust = 0.75;
+    double yaxis = RobotMap.XController.getLeftY();
+    double xaxis = RobotMap.XController.getLeftX();
+    double r2o2 = Math.sqrt(2)/2;
+    double left = (xaxis-yaxis)*r2o2;
+    double right = (-xaxis-yaxis)*r2o2;
+    Robot.Drive.drive(thrust*left, thrust*right);
+    System.out.println("Left: " + left + "Right: " + right);
     CommandScheduler.getInstance().run();
   }
 
