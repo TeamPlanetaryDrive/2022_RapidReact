@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.XboxController;
 //import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -84,7 +85,7 @@ public class RobotMap {
         public static final int XBOX_PORT = 2;
         public static final XboxController XController = new XboxController(XBOX_PORT);
 
-
+        public static JoystickButton lTrigger, lBumper, rTrigger, rBumper, xButton, yButton, aButton, bButton;
 
         /* new stuff */
         public static final int CLIMB_MOTOR_CHANNEL_1 = 2856, CLIMB_MOTOR_CHANNEL_2 = 2857;
@@ -128,7 +129,7 @@ public class RobotMap {
                 button8_left = new JoystickButton(leftJoystick, 8);
                 button9_left = new JoystickButton(leftJoystick, 9);
                 */
-
+                
                 // initializing buttons on right joystick
                 /*
                 button1_right = new JoystickButton(rightJoystick, 1);

@@ -12,9 +12,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
+
 import java.lang.Math;
 //import frc.robot.OI; unused
-import frc.robot.commands.auto.*;
+import frc.robot.commands.autonomous.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,12 +27,12 @@ import frc.robot.commands.auto.*;
 public class Robot extends TimedRobot {
 
   public static DriveTrain Drive;// could be redundent , if we delete drivetrain get rid of this
-  public static Lift Elevator; // elevator for gripper
+  //public static Lift Elevator; // elevator for gripper
   public static Vision Cameras; // used for the vision class as needed
-  public static Barriers Gates;
+  //public static Barriers Gates;
   // public static Multi MultiSystem;   // contains shooter, intake, rotator
-  public static Shooter Launcher;
-  public static Climb Climber;
+  //public static Shooter Launcher;
+  //public static Climb Climber;
   public static OI m_oi;
 
   public Command m_autonomousCommand;
@@ -45,18 +46,17 @@ public class Robot extends TimedRobot {
 
   public void robotInit() {
     RobotMap.init();
-    Climber = new Climb();
+    
     Drive = new DriveTrain();
-    Elevator = new Lift();
     Cameras = new Vision();
-    Gates = new Barriers();
+    //Gates = new Gates();
     // MultiSystem = new Multi();
-    Launcher = new Shooter();
+    //Launcher = new Shooter();
     m_oi = new OI();
     Cameras.init();
     m_chooser = new SendableChooser<Command>();
-    m_chooser.setDefaultOption("auto2", new auto2());
-    m_chooser.addOption("breakStartLine", new breakStartLine());
+    m_chooser.setDefaultOption("auto1", new auto1());
+    //m_chooser.addOption("breakStartLine", new breakStartLine());
     // m_chooser.addOption("auto2", new auto2());
     SmartDashboard.putData("Auto mode", m_chooser);
   }

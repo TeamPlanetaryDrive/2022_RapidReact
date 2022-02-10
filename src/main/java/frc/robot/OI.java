@@ -33,8 +33,25 @@ public class OI {
     RobotMap.button9_right.whenPressed(new releaseBallRight());
     friccaroo
     */
-    if(RobotMap.XController.getYButtonPressed()) {
-      new takePicture();
+
+    /*
+    Goals for Xbox Controller Button Pressing Mapping
+    -------------------------------------------------
+    D-Pad: Fine Movement Control (X)
+    Left Stick: Movement (X)
+    Right Stick: Manual Shooter Control (X)
+    Left Trigger: Spintake Wheels (H)
+    Right Trigger: Spin Shooter Wheels (H)
+    Left Bumper: Open Gates for a time interval (H/P)
+    Right Bumper: Group Command Shoot (P)
+    X: Turn to Ball (P)
+    Y: Climb (P)
+    A: Turn to Goal (P)
+    B: ? [Reset?, Debug?] (P)
+    */
+    if(RobotMap.XController.getBButtonPressed()) {
+      System.out.println("B button pressed");
     }
+    
   }
 }
