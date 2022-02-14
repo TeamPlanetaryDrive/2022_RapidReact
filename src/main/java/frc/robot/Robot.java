@@ -158,11 +158,16 @@ public class Robot extends TimedRobot {
     double dpadAngle = RobotMap.XController.getPOV()*(Math.PI/180);
     double dxaxis = Math.sin(dpadAngle);
     double dyaxis = -Math.cos(dpadAngle);
+    if(dpadAngle < 0) {
+      dxaxis = 0;
+      dyaxis = 0;
+    }
     double r2o2 = Math.sqrt(2)/2;
-    double left = thrust*((xaxis-yaxis)*r2o2+0.33*(dxaxis-dyaxis)*r2o2);
-    double right = thrust*((-xaxis-yaxis)*r2o2+0.33*(-dxaxis-dyaxis)*r2o2);
+    double left = thrust*((xaxis-yaxis)*r2o2+0.66*(dxaxis-dyaxis)*r2o2);
+    double right = thrust*((-xaxis-yaxis)*r2o2+0.66*(-dxaxis-dyaxis)*r2o2);
     Robot.Drive.drive(left, right);
     System.out.println("Left: " + left + "Right: " + right);
+    System.out.println("dyaxis: " + dyaxis + "dxaxis" + dxaxis);
     CommandScheduler.getInstance().run();
   }
 
