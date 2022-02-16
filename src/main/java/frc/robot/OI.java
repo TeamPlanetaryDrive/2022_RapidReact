@@ -6,6 +6,8 @@
 /*----------------------------------------------------------------------------*/
 package frc.robot;
 
+import frc.robot.commands.testCommand;
+
 //import frc.robot.commands.*;
 
 /**
@@ -13,6 +15,33 @@ package frc.robot;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+
+    static double r2o2 = Math.sqrt(2)/2;
+    static double thrust = 0.75;
+
+    static double[] getDriveSpeed() {
+      double yaxis = RobotMap.XController.getLeftY();
+      double xaxis = RobotMap.XController.getLeftX();
+      double dpadAngle = RobotMap.XController.getPOV()*(Math.PI/180);
+      double dxaxis = Math.sin(dpadAngle);
+      double dyaxis = -Math.cos(dpadAngle);
+      if(dpadAngle < 0) {
+        dxaxis = 0;
+        dyaxis = 0;
+      }
+      double left = thrust*((xaxis-yaxis)*r2o2+0.66*(dxaxis-dyaxis)*r2o2);
+      double right = thrust*((-xaxis-yaxis)*r2o2+0.66*(-dxaxis-dyaxis)*r2o2);
+      double[] lr = {left,right};
+      return lr;
+    }
+    
+    static double getLiftSpeed() {
+      return RobotMap.XController.getRightTriggerAxis() - RobotMap.XController.getLeftTriggerAxis();
+    }
+    
+    
+    
+    
 
   public OI() {
     /*
@@ -49,9 +78,8 @@ public class OI {
     A: Turn to Goal (P)
     B: ? [Reset?, Debug?] (P)
     */
-    if(RobotMap.XController.getBButtonPressed()) {
-      System.out.println("B button pressed");
-    }
+    RobotMap.bButton.whenPressed(new testCommand());
+    
     
   }
 }

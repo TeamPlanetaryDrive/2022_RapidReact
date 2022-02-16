@@ -152,22 +152,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //Robot.Drive.drive(-0.4 * RobotMap.leftJoystick.getY(), 0.4 * RobotMap.rightJoystick.getY());
-    double thrust = 0.75;
-    double yaxis = RobotMap.XController.getLeftY();
-    double xaxis = RobotMap.XController.getLeftX();
-    double dpadAngle = RobotMap.XController.getPOV()*(Math.PI/180);
-    double dxaxis = Math.sin(dpadAngle);
-    double dyaxis = -Math.cos(dpadAngle);
-    if(dpadAngle < 0) {
-      dxaxis = 0;
-      dyaxis = 0;
-    }
-    double r2o2 = Math.sqrt(2)/2;
-    double left = thrust*((xaxis-yaxis)*r2o2+0.66*(dxaxis-dyaxis)*r2o2);
-    double right = thrust*((-xaxis-yaxis)*r2o2+0.66*(-dxaxis-dyaxis)*r2o2);
-    Robot.Drive.drive(left, right);
-    System.out.println("Left: " + left + "Right: " + right);
-    System.out.println("dyaxis: " + dyaxis + "dxaxis" + dxaxis);
+    
+    double[] speeds = OI.getDriveSpeed();
+
+    Robot.Drive.drive(speeds[0], speeds[1]);
+    MotorTurning.drive(OI.getLiftSpeed(),RobotMap.liftMotor);
+    //System.out.println("Left: " + speeds[0] + "Right: " + speeds[1]);
     CommandScheduler.getInstance().run();
   }
 

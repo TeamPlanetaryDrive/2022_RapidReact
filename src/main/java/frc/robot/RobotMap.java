@@ -68,7 +68,7 @@ public class RobotMap {
 
         // HARDWARE
         // motors
-        public static Victor lMotor, rMotor;
+        public static Victor lMotor, rMotor, liftMotor;
         public static MotorController lift;
 
         // state for lift motor
@@ -117,7 +117,11 @@ public class RobotMap {
                 // initializing motors
                 lMotor = new Victor(LEFT_MOTOR_CHANNEL);
                 rMotor = new Victor(RIGHT_MOTOR_CHANNEL);
+                liftMotor = new Victor(LIFT_CHANNEL);
                 rMotor.setInverted(true);
+
+                
+
                 // initializing buttons on left joystick
                 /* it's shitting
                 button1_left = new JoystickButton(leftJoystick, 1);
