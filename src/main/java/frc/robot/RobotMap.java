@@ -85,8 +85,6 @@ public class RobotMap {
         public static final int XBOX_PORT = 2;
         public static final XboxController XController = new XboxController(XBOX_PORT);
 
-        public static JoystickButton lTrigger, lBumper, rTrigger, rBumper, xButton, yButton, aButton, bButton;
-
         /* new stuff */
         public static final int CLIMB_MOTOR_CHANNEL_1 = 2856, CLIMB_MOTOR_CHANNEL_2 = 2857;
         public static final int WINDOW_MOTOR_CHANNEL = 2856;
@@ -101,8 +99,6 @@ public class RobotMap {
         public static Encoder climbEncoder, frameEncoder;
         public static Servo barrierL, barrierR;
         public static DoubleSolenoid framePiston;
-
-
 
         // For example to map the left and right motors, you could define the
         // following variables to use with your drivetrain subsystem.
