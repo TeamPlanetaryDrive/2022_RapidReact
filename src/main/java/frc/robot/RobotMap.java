@@ -82,7 +82,7 @@ public class RobotMap {
         public static JoystickButton button1_left, button2_left, button3_left, button4_left, button5_left, button8_left, button9_left;
         public static JoystickButton button1_right, button2_right, button3_right, button4_right, button5_right, button8_right;
         */
-        public static JoystickButton bButton;
+        public static JoystickButton aButton, bButton, xButton, yButton, backButton, startButton, leftBumper, rightBumper;
         public static final int XBOX_PORT = 2;
         public static final XboxController XController = new XboxController(XBOX_PORT);
 
@@ -116,8 +116,16 @@ public class RobotMap {
                 rMotor = new Victor(RIGHT_MOTOR_CHANNEL);
                 liftMotor = new Victor(LIFT_CHANNEL);
                 rMotor.setInverted(true);
-                bButton = new JoystickButton(XController,2);
 
+                //map each button to a JoystickButton
+                aButton = new JoystickButton(XController, 1);
+                bButton = new JoystickButton(XController, 2);
+                xButton = new JoystickButton(XController, 3);
+                yButton = new JoystickButton(XController, 4);
+                leftBumper = new JoystickButton(XController, 5);
+                rightBumper = new JoystickButton(XController, 6);
+                backButton = new JoystickButton(XController, 7);
+                startButton = new JoystickButton(XController, 8);
                 
 
                 
