@@ -119,6 +119,7 @@ public class RobotMap {
                 rMotor = new Victor(RIGHT_MOTOR_CHANNEL);
                 liftMotor = new Victor(LIFT_CHANNEL);
                 rMotor.setInverted(true);
+                bButton = new JoystickButton(XController,2);
 
                 
 

@@ -38,7 +38,8 @@ public class Vision extends SubsystemBase {
 	  
 			cvSink = CameraServer.getVideo();
 			CvSource balling = CameraServer.putVideo("We Balling", 640, 480);
-	  
+			CvSource contouring = CameraServer.putVideo("We Contouring", 640, 480);
+
 			Mat source = new Mat();
 			while(!Thread.interrupted()) {
 			  if (cvSink.grabFrame(source) == 0) {
@@ -64,7 +65,8 @@ public class Vision extends SubsystemBase {
 		Size s = new Size(size, size);
 		return new Mat(s,CvType.CV_8UC1,k);
 	}
-	public Mat redBall(Mat out) {
+	public Mat redBall(Mat in) {
+		Mat out = in.clone();
 		Scalar lb = new Scalar(32.0,28.0,96.0);
 		Scalar ub = new Scalar(50.0,50.0,155.0);
 		Mat kerny = makeKernel(3);
@@ -76,5 +78,13 @@ public class Vision extends SubsystemBase {
 		totalEntry.setDoubleArray(out.get(0,0));
 		return out;
 
+	}
+
+	public Mat detectGoal(Mat in) {
+		Mat out = in.clone();
+
+		
+
+		return out;
 	}
 }

@@ -6,9 +6,7 @@
 /*----------------------------------------------------------------------------*/
 package frc.robot;
 
-import frc.robot.commands.testCommand;
-
-//import frc.robot.commands.*;
+import frc.robot.commands.*;
 
 /**
  * This class is what binds the controls on the physical operator
