@@ -63,7 +63,7 @@ public class OI {
     RobotMap.button9_right.whenPressed(new releaseBallRight());
     friccaroo
     */
-
+    RobotMap.bButton.whenPressed(new testCommand());
     /*
     Goals for Xbox Controller Button Pressing Mapping
     -------------------------------------------------

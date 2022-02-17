@@ -82,6 +82,7 @@ public class RobotMap {
         public static JoystickButton button1_left, button2_left, button3_left, button4_left, button5_left, button8_left, button9_left;
         public static JoystickButton button1_right, button2_right, button3_right, button4_right, button5_right, button8_right;
         */
+        public static JoystickButton bButton;
         public static final int XBOX_PORT = 2;
         public static final XboxController XController = new XboxController(XBOX_PORT);
 
@@ -119,30 +120,7 @@ public class RobotMap {
 
                 
 
-                // initializing buttons on left joystick
-                /* it's shitting
-                button1_left = new JoystickButton(leftJoystick, 1);
-                button2_left = new JoystickButton(leftJoystick, 2);
-                button3_left = new JoystickButton(leftJoystick, 3);
-                button4_left = new JoystickButton(leftJoystick, 4);
-                button5_left = new JoystickButton(leftJoystick, 5);
-
-                button8_left = new JoystickButton(leftJoystick, 8);
-                button9_left = new JoystickButton(leftJoystick, 9);
-                */
                 
-                // initializing buttons on right joystick
-                /*
-                button1_right = new JoystickButton(rightJoystick, 1);
-                button2_right = new JoystickButton(rightJoystick, 2);
-                button3_right = new JoystickButton(rightJoystick, 3);
-                button4_right = new JoystickButton(rightJoystick, 4);
-                button5_right = new JoystickButton(rightJoystick, 5);
-
-                //button3_right = new JoystickButton(rightJoystick, 3);
-                //button8_right = new JoystickButton(rightJoystick, 8);
-                */
-
                 // lift encoder and motor setup
                 // liftEncoder = new Encoder(LIFT_ENC_CHANNEL_A, LIFT_ENC_CHANNEL_B);
                 // liftEncoder.setDistancePerPulse(distancePerPulse);

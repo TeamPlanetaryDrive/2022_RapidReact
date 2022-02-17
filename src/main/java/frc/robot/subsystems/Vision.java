@@ -13,6 +13,10 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -25,11 +29,13 @@ public class Vision extends SubsystemBase {
 
 	CvSink cvSink;
 	NetworkTableEntry totalEntry;
+	NetworkTableEntry contourInfo;
 	public void init(){
 		// get entries from NetworkTable
 		NetworkTableInstance inst = NetworkTableInstance.getDefault();
       	NetworkTable table = inst.getTable("datatable");
       	totalEntry = table.getEntry("Top Left Pixel");
+		contourInfo = table.getEntry("Contour Positions rawr xd nya~");
 
 		// create vision thread and camera feed
 		new Thread(() -> {
@@ -46,8 +52,8 @@ public class Vision extends SubsystemBase {
 				continue;
 			  }
 			  
-
 			  balling.putFrame(redBall(source));
+			  contouring.putFrame(detectGoal(source));
 			}
 		  }).start();
   	}
@@ -83,8 +89,24 @@ public class Vision extends SubsystemBase {
 	public Mat detectGoal(Mat in) {
 		Mat out = in.clone();
 
-		
+		// transpose so horizontal ordering
+		Core.transpose(out, out);
 
+		// mask out goal
+		Scalar lb = new Scalar(61.0,96.0,132.0);
+		Scalar ub = new Scalar(103.0,187.0,194.0);
+		Imgproc.cvtColor(out, out, Imgproc.COLOR_BGR2HSV);
+		Core.inRange(out, lb, ub, out);
+
+		// find contours
+		List<MatOfPoint> contours = new ArrayList<>();
+		Mat hierarchy = new Mat();
+		Imgproc.findContours(out,contours,hierarchy,Imgproc.RETR_TREE,Imgproc.CHAIN_APPROX_SIMPLE);
+		//publish positions ??
+
+		// publish
+		Core.transpose(out, out);
+		contourInfo.setDoubleArray(data);
 		return out;
 	}
 }
