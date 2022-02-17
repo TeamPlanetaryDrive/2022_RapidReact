@@ -34,7 +34,9 @@ public class OI {
     }
     
     static double getLiftSpeed() {
-      return RobotMap.XController.getRightTriggerAxis() - RobotMap.XController.getLeftTriggerAxis();
+      double right = RobotMap.XController.getRightBumper()?1.0:0.0;
+      double left = RobotMap.XController.getLeftBumper()?-1.0:0.0;
+      return right + left;
     }
     
     
@@ -42,6 +44,7 @@ public class OI {
     
 
   public OI() {
+    
     /*
     teleop lift controls
     //RobotMap.button8_left.whileHeld(new ManualLift());
@@ -76,7 +79,6 @@ public class OI {
     A: Turn to Goal (P)
     B: ? [Reset?, Debug?] (P)
     */
-    RobotMap.bButton.whenPressed(new testCommand());
     
     
   }

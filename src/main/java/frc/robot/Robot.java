@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
 
-import java.lang.Math;
+//import java.lang.Math;
 //import frc.robot.OI; unused
 import frc.robot.commands.autonomous.*;
 
@@ -154,10 +154,8 @@ public class Robot extends TimedRobot {
     //Robot.Drive.drive(-0.4 * RobotMap.leftJoystick.getY(), 0.4 * RobotMap.rightJoystick.getY());
     
     double[] speeds = OI.getDriveSpeed();
-
     Robot.Drive.drive(speeds[0], speeds[1]);
     MotorTurning.drive(OI.getLiftSpeed(),RobotMap.liftMotor);
-    //System.out.println("Left: " + speeds[0] + "Right: " + speeds[1]);
     CommandScheduler.getInstance().run();
   }
 
