@@ -33,12 +33,14 @@ public class OI {
       return lr;
     }
     
+    /*
     static double getLiftSpeed() {
       double right = RobotMap.XController.getRightBumper()?1.0:0.0;
       double left = RobotMap.XController.getLeftBumper()?-1.0:0.0;
       return right + left;
     }
-    
+    */
+
     
     
     
@@ -64,6 +66,8 @@ public class OI {
     friccaroo
     */
     RobotMap.bButton.whenPressed(new testCommand());
+    RobotMap.leftBumper.whenHeld(new lift(-1.0));
+    RobotMap.rightBumper.whenHeld(new lift(1.0));
     /*
     Goals for Xbox Controller Button Pressing Mapping
     -------------------------------------------------

@@ -155,7 +155,7 @@ public class Robot extends TimedRobot {
     
     double[] speeds = OI.getDriveSpeed();
     Robot.Drive.drive(speeds[0], speeds[1]);
-    MotorTurning.drive(OI.getLiftSpeed(),RobotMap.liftMotor);
+    //MotorTurning.drive(OI.getLiftSpeed(),RobotMap.liftMotor);
     CommandScheduler.getInstance().run();
   }
 
