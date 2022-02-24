@@ -103,21 +103,24 @@ public class Vision extends SubsystemBase {
 		List<MatOfPoint> contours = new ArrayList<>();
 		Mat hierarchy = new Mat();
 		Imgproc.findContours(out,contours,hierarchy,Imgproc.RETR_TREE,Imgproc.CHAIN_APPROX_SIMPLE);
+
+		Imgproc.drawContours(out, contours, -1, new Scalar(100,100,100), 1);
 		// find untransposed {x,y} positions for each contour
 		ArrayList<double[]> positions = new ArrayList<double[]>();
 		for(int i=0; i<contours.size(); i++){
 			Moments p = Imgproc.moments(contours.get(i), false);
 			positions.add(new double[]{(p.get_m01() / p.get_m00()),(p.get_m10() / p.get_m00())});
+			System.out.println("["+positions.get(positions.size()-1)[0]+" ,"+positions.get(positions.size()-1)[1]+"]");
 		}
+		System.out.println(" --" );
 		
 		// create list of chains
-		int longind = 0;
+		int longind = -1;
 		ArrayList<ArrayList<Integer>> chains = new ArrayList<ArrayList<Integer>>();
 		for(int i=contours.size()-1; i>=0; i--){
 			// find close contour
 			int j;
-			for(j=i; j<contours.size() && !contourInRange(positions,i,j); j++);
-
+			for(j=i+1; j<contours.size() && !contourInRange(positions,i,j); j++);
 			// add chain list of other contour if possible
 			ArrayList<Integer> indlist = new ArrayList<Integer>();
 			indlist.add(i);
@@ -127,34 +130,44 @@ public class Vision extends SubsystemBase {
 				}
 			}
 			chains.add(0,indlist);
-
 			// set this to longest chain if it is
-			if(chains.get(longind-i).size() < chains.get(0).size()){
+			if(longind<0 || chains.get(longind-i).size() < chains.get(0).size()){
 				longind = i;
 			}
+			//System.out.println("moweee");
+			for(int q = 0; q<indlist.size()-1; q++) {
+				//System.out.println("WOWEEE");
+				Point firstPoint = new Point(positions.get(q)[0], positions.get(q)[1]);
+				Point nextPoint = new Point(positions.get(q+1)[0], positions.get(q+1)[1]);
+				Imgproc.line(out, firstPoint, nextPoint, new Scalar(0,255,0), 10);
+				
+			}
+			//System.out.println("balls in yo jaws");
 		}
-
+		
+		if(longind > 0) {
 		// create list of x positions
-		ArrayList<Integer> goalchain = chains.get(longind);
-		double[] xposs = new double[goalchain.size()];
-		for(int i=0; i<goalchain.size(); i++){
-			xposs[i] = positions.get(goalchain.get(i))[0];
+			ArrayList<Integer> goalchain = chains.get(longind);
+			double[] xposs = new double[goalchain.size()];
+			for(int i=0; i<goalchain.size(); i++){
+				xposs[i] = positions.get(goalchain.get(i))[0];
+			}
+			// publish
+			contourInfo.setDoubleArray(xposs);
 		}
-
-		// publish
 		Core.transpose(out, out);
-		contourInfo.setDoubleArray(xposs);
 		return out;
 	}
 
 	// if the other contour is valid to move to as a chain
 	public boolean contourInRange(ArrayList<double[]> positions, int thisindex, int otherindex){
-		final int ymax = 16;
+		return true;
+		/*final int ymax = 16;
 		final int xmax = 50;
 		double[] thispos = positions.get(thisindex);
 		double[] otherpos = positions.get(otherindex);
 		boolean withiny = Math.abs(thispos[1] - otherpos[1]) <= ymax;
 		boolean withinx = thispos[0] - otherpos[0] <= xmax && thispos[0] - otherpos[0] >= 0;
-		return withinx && withiny;
+		return withinx && withiny;*/
 	}
 }
