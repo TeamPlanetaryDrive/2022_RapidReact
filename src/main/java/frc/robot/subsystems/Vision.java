@@ -88,29 +88,33 @@ public class Vision extends SubsystemBase {
 	}
 
 	public Mat detectGoal(Mat in) {
-		Mat out = in.clone();
+		Mat out = new Mat();
 
 		// transpose so horizontal ordering
-		Core.transpose(out, out);
+		Core.transpose(in, out);
 
 		// mask out goal
 		Scalar lb = new Scalar(61.0,132.0,96.0);
-		Scalar ub = new Scalar(103.0,194.0,187.0);
+		Scalar ub = new Scalar(103.0,194.0,255.0);
 		Imgproc.cvtColor(out, out, Imgproc.COLOR_BGR2HLS);
 		Core.inRange(out, lb, ub, out);
-
+		
 		// find contours
 		List<MatOfPoint> contours = new ArrayList<>();
 		Mat hierarchy = new Mat();
+		Mat contout = Mat.zeros(out.size(),CvType.CV_8UC1);
 		Imgproc.findContours(out,contours,hierarchy,Imgproc.RETR_TREE,Imgproc.CHAIN_APPROX_SIMPLE);
 
-		Imgproc.drawContours(out, contours, -1, new Scalar(100,100,100), 1);
+		Imgproc.drawContours(contout, contours, -1, new Scalar(100,100,100), 1);
 		// find untransposed {x,y} positions for each contour
 		ArrayList<double[]> positions = new ArrayList<double[]>();
 		for(int i=0; i<contours.size(); i++){
-			Moments p = Imgproc.moments(contours.get(i), false);
-			positions.add(new double[]{(p.get_m01() / p.get_m00()),(p.get_m10() / p.get_m00())});
-			System.out.println("["+positions.get(positions.size()-1)[0]+" ,"+positions.get(positions.size()-1)[1]+"]");
+			//Moments p = Imgproc.moments(contours.get(i), false);
+			RotatedRect rrect = Imgproc.minAreaRect(contours.get(i));
+			double[] pd;
+			System.out.println(" scooby ");
+			positions.add(pd = new double[]{(p.get_m01() / p.get_m00()),(p.get_m10() / p.get_m00())});
+			System.out.println("["+pd[0]+" ,"+pd[1]+"]");
 		}
 		System.out.println(" --" );
 		
@@ -139,7 +143,7 @@ public class Vision extends SubsystemBase {
 				//System.out.println("WOWEEE");
 				Point firstPoint = new Point(positions.get(q)[0], positions.get(q)[1]);
 				Point nextPoint = new Point(positions.get(q+1)[0], positions.get(q+1)[1]);
-				Imgproc.line(out, firstPoint, nextPoint, new Scalar(0,255,0), 10);
+				Imgproc.line(contout, firstPoint, nextPoint, new Scalar(0,255,0), 10);
 				
 			}
 			//System.out.println("balls in yo jaws");
@@ -155,8 +159,10 @@ public class Vision extends SubsystemBase {
 			// publish
 			contourInfo.setDoubleArray(xposs);
 		}
-		Core.transpose(out, out);
-		return out;
+		Core.transpose(contout, contout);
+		
+		return contout;
+		
 	}
 
 	// if the other contour is valid to move to as a chain
