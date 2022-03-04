@@ -38,6 +38,12 @@ public class Vision extends SubsystemBase {
       	totalEntry = table.getEntry("Top Left Pixel");
 		contourInfo = table.getEntry("Contour Positions rawr xd nya~");
 
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+
+		Mat contProc = new Mat();
+		Mat contOut = new Mat();
+		Mat ballProc = new Mat();
+
 		// create vision thread and camera feed
 		new Thread(() -> {
 			UsbCamera camera = CameraServer.startAutomaticCapture();
@@ -47,14 +53,17 @@ public class Vision extends SubsystemBase {
 			CvSource balling = CameraServer.putVideo("We Balling", 640, 480);
 			CvSource contouring = CameraServer.putVideo("We Contouring", 640, 480);
 
-			Mat source = new Mat();
 			while(!Thread.interrupted()) {
-			  if (cvSink.grabFrame(source) == 0) {
+			  if (cvSink.grabFrame(contProc) == 0 || cvSink.grabFrame(ballProc) == 0) {
 				continue;
 			  }
 			  
-			  balling.putFrame(redBall(source));
-			  contouring.putFrame(detectGoal(source));
+			  balling.putFrame(redBall(ballProc));
+			  contouring.putFrame(detectGoal(contProc,contOut));
+
+			  contProc.release();
+			  contOut.release();
+			  ballProc.release();
 			}
 		  }).start();
   	}
@@ -72,8 +81,7 @@ public class Vision extends SubsystemBase {
 		Size s = new Size(size, size);
 		return new Mat(s,CvType.CV_8UC1,k);
 	}
-	public Mat redBall(Mat in) {
-		Mat out = in.clone();
+	public Mat redBall(Mat out) {
 		Scalar lb = new Scalar(32.0,28.0,96.0);
 		Scalar ub = new Scalar(50.0,50.0,155.0);
 		Mat kerny = makeKernel(3);
@@ -87,25 +95,22 @@ public class Vision extends SubsystemBase {
 
 	}
 
-	public Mat detectGoal(Mat in) {
-		Mat out = new Mat();
-
+	public Mat detectGoal(Mat out, Mat contout) {
 		// transpose so horizontal ordering
-		Core.transpose(in, out);
+		Core.transpose(out, out);
 
 		// mask out goal
 		Scalar lb = new Scalar(61.0,132.0,96.0);
-		Scalar ub = new Scalar(103.0,194.0,255.0);
+		Scalar ub = new Scalar(103.0,230.0,255.0);
 		Imgproc.cvtColor(out, out, Imgproc.COLOR_BGR2HLS);
 		Core.inRange(out, lb, ub, out);
-		
+
 		// find contours
 		List<MatOfPoint> contours = new ArrayList<>();
 		Mat hierarchy = new Mat();
-		Mat contout = Mat.zeros(out.size(),CvType.CV_8UC1);
+		contout = Mat.zeros(out.size(),CvType.CV_8UC1);
 		Imgproc.findContours(out,contours,hierarchy,Imgproc.RETR_TREE,Imgproc.CHAIN_APPROX_SIMPLE);
-
-		Imgproc.drawContours(contout, contours, -1, new Scalar(100,100,100), 1);
+		Imgproc.drawContours(contout, contours, -1, new Scalar(100,100,100), 2);
 		// find untransposed {x,y} positions for each contour
 		ArrayList<double[]> positions = new ArrayList<double[]>();
 		for(int i=0; i<contours.size(); i++){
@@ -163,7 +168,7 @@ public class Vision extends SubsystemBase {
 		}
 		Core.transpose(contout, contout);
 		
-		return contout;
+		return out;
 		
 	}
 
