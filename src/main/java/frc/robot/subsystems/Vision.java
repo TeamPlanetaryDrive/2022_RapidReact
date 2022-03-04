@@ -110,10 +110,12 @@ public class Vision extends SubsystemBase {
 		ArrayList<double[]> positions = new ArrayList<double[]>();
 		for(int i=0; i<contours.size(); i++){
 			//Moments p = Imgproc.moments(contours.get(i), false);
-			RotatedRect rrect = Imgproc.minAreaRect(contours.get(i));
+			MatOfPoint2f newt = new MatOfPoint2f(contours.get(i).toArray());
+			RotatedRect rrect = Imgproc.minAreaRect(newt);
 			double[] pd;
 			System.out.println(" scooby ");
-			positions.add(pd = new double[]{(p.get_m01() / p.get_m00()),(p.get_m10() / p.get_m00())});
+			positions.add(pd = new double[]{rrect.center.x, rrect.center.y});
+			//positions.add(pd = new double[]{(p.get_m01() / p.get_m00()),(p.get_m10() / p.get_m00())});
 			System.out.println("["+pd[0]+" ,"+pd[1]+"]");
 		}
 		System.out.println(" --" );
