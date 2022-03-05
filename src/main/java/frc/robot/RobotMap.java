@@ -39,12 +39,6 @@ public class RobotMap {
         // Camera Resolution Dimensions
         public static final int CAMERA_RESOLUTION_WIDTH = 320, CAMERA_RESOLUTION_HEIGHT = 240;
 
-        // Digital (0-9, 10-25)
-        public static int LEFT_MOTOR_CHANNEL = 0, RIGHT_MOTOR_CHANNEL = 1;
-
-        // motor based
-        public static int LIFT_CHANNEL = 2;
-
         // piston based
         public static int GRIPPER_CHANNEL_A = 0, GRIPPER_CHANNEL_B = 2;
 
@@ -54,7 +48,16 @@ public class RobotMap {
                         DRIVE_PID_POSITION_KD = 1.00, // 1.00
                         DRIVE_PID_ANGLE_KP = 0.02, DRIVE_PID_ANGLE_KI = 0.001, DRIVE_PID_ANGLE_KD = 0.0;
 
-        // enconder channels
+        // Digital (0-9, 10-25)
+        public static int LEFT_MOTOR_CHANNEL = 0, RIGHT_MOTOR_CHANNEL = 1;
+
+        // motor based
+        public static int LIFT_CHANNEL = 2;
+        //outlining spintake motors, placeholder channels
+        public static int spinTakeWheel1 = 1;
+        public static int spinTakeWheel2 = 2;
+        
+                        // enconder channels
         // not final yet
         public static int LIFT_ENC_CHANNEL_A = 0, LIFT_ENC_CHANNEL_B = 1;
         // LEFT_ENC_CHANNEL_A = 0,
@@ -68,7 +71,7 @@ public class RobotMap {
 
         // HARDWARE
         // motors
-        public static Victor lMotor, rMotor, liftMotor;
+        public static Victor lMotor, rMotor, liftMotor, SIW1, SIW2;
         public static MotorController lift;
 
         // state for lift motor
@@ -115,6 +118,8 @@ public class RobotMap {
                 lMotor = new Victor(LEFT_MOTOR_CHANNEL);
                 rMotor = new Victor(RIGHT_MOTOR_CHANNEL);
                 liftMotor = new Victor(LIFT_CHANNEL);
+                SIW1 = new Victor(spinTakeWheel1);
+                SIW2 = new Victor(spinTakeWheel2);
                 rMotor.setInverted(true);
 
                 //map each button to a JoystickButton
