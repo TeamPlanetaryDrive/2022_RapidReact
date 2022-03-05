@@ -24,6 +24,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.util.Color;
 
 //use for the guidence through the camera
 public class Vision extends SubsystemBase {
@@ -111,13 +112,18 @@ public class Vision extends SubsystemBase {
 		Mat hierarchy = new Mat();
 		
 		Imgproc.findContours(out,contours,hierarchy,Imgproc.RETR_TREE,Imgproc.CHAIN_APPROX_SIMPLE);
-		Imgproc.drawContours(contout, contours, -1, new Scalar(100,100,100), 2);
+		// Imgproc.drawContours(contout, contours, -1, new Scalar(100,100,100), 2);
 		// find untransposed {x,y} positions for each contour
 		ArrayList<double[]> positions = new ArrayList<double[]>();
 		for(int i=0; i<contours.size(); i++){
 			//Moments p = Imgproc.moments(contours.get(i), false);
 			MatOfPoint2f newt = new MatOfPoint2f(contours.get(i).toArray());
 			RotatedRect rrect = Imgproc.minAreaRect(newt);
+			Point[] rectPoints = new Point[4];
+			rrect.points(rectPoints);
+			for(int j = 0; j < 4; j++) {
+				Imgproc.line(contout,rectPoints[j],rectPoints[(j+1)%4],new Scalar(100,100,100));
+			}
 			double[] pd;
 			//System.out.println(" scooby ");
 			positions.add(pd = new double[]{rrect.center.x, rrect.center.y});
