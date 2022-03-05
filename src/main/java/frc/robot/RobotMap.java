@@ -118,8 +118,8 @@ public class RobotMap {
                 lMotor = new Victor(LEFT_MOTOR_CHANNEL);
                 rMotor = new Victor(RIGHT_MOTOR_CHANNEL);
                 liftMotor = new Victor(LIFT_CHANNEL);
-                SIW1 = new Victor(spinTakeWheel1);
-                SIW2 = new Victor(spinTakeWheel2);
+                //SIW1 = new Victor(spinTakeWheel1);
+                //SIW2 = new Victor(spinTakeWheel2);
                 rMotor.setInverted(true);
 
                 //map each button to a JoystickButton

@@ -102,10 +102,11 @@ public class Vision extends SubsystemBase {
 		contout = Mat.zeros(out.size(),CvType.CV_8UC1);
 		Imgproc.cvtColor(contout,contout,Imgproc.COLOR_GRAY2BGR);
 		// mask out goal
-		Scalar lb = new Scalar(61.0,132.0,96.0);
-		Scalar ub = new Scalar(103.0,255.0,255.0);
+		Scalar lb = new Scalar(61.0,100.0,96.0);
+		Scalar ub = new Scalar(103.0,225.0,255.0);
 		Imgproc.cvtColor(out, out, Imgproc.COLOR_BGR2HLS);
 		Core.inRange(out, lb, ub, out);
+		Imgproc.dilate(out,out,makeKernel(3));
 
 		// find contours
 		List<MatOfPoint> contours = new ArrayList<>();
@@ -155,8 +156,6 @@ public class Vision extends SubsystemBase {
 			int j;
 			for(j=i+1; j<contours.size() && !contourInRange(sortPositions,i,j); j++);
 			// add chain list of other contour if possible
-			//ArrayList<Integer> indlist = new ArrayList<Integer>();
-			//indlist.add(i);
 			if(j<contours.size()){
 				for(int ind : chains.get(j)){
 					chains.get(i).add(ind);
@@ -166,13 +165,9 @@ public class Vision extends SubsystemBase {
 			if(longind<0 || chains.get(i).size() > chains.get(longind).size()){
 				longind = i;
 			}
-
-			//System.out.println("moweee");
-			
-			//System.out.println("balls in yo jaws");
 		}
 		
-		if(longind >= 0) {
+		if(longind >= 0 && chains.get(longind).size() > 3) {
 			//draw chain
 			int ch = longind;
 			for(int q = 0; q<chains.get(ch).size()-1; q++) {
@@ -182,14 +177,18 @@ public class Vision extends SubsystemBase {
 				Imgproc.line(contout, firstPoint, nextPoint, new Scalar((ch%3)%2*255,((ch+1)%3)%2*255,((ch+2)%3)%2*255), 2);
 				
 			}
-		// create list of x positions
+			// create list of x positions
 			ArrayList<Integer> goalchain = chains.get(longind);
 			double[] xposs = new double[goalchain.size()];
+			double ytotal = 0;
 			for(int i=0; i<goalchain.size(); i++){
 				xposs[i] = centerPositions.get(goalchain.get(i)).y;
+				ytotal += centerPositions.get(goalchain.get(i)).x;
 			}
+			double gsize = Math.abs(xposs[0]-xposs[xposs.length-1]);
+			double gpos = ytotal / xposs.length;
 			// publish
-			contourInfo.setDoubleArray(xposs);
+			contourInfo.setDoubleArray(new double[] {gsize,gpos});
 		}
 		Core.transpose(contout, contout);
 		
@@ -205,7 +204,7 @@ public class Vision extends SubsystemBase {
 		Point otherpos = positions.get(otherindex);
 		boolean withiny = Math.abs(thispos.x - otherpos.x) <= ymax;
 		boolean withinx = thispos.y - otherpos.y <= xmax && thispos.y - otherpos.y >= 0;
-		//System.out.println((withinx&&withiny)+"-"+thispos+"-"+otherpos);
-		return withinx && withiny;
+		boolean horiz = Math.abs(thispos.x - otherpos.x) < Math.abs(thispos.y - otherpos.y);
+		return withinx && withiny && horiz;
 	}
 }
