@@ -27,6 +27,9 @@ public class OI {
         dxaxis = 0;
         dyaxis = 0;
       }
+      if(yaxis > 0) {
+        xaxis*=-1;
+      }
       double left = thrust*((xaxis-yaxis)*r2o2+0.66*(dxaxis-dyaxis)*r2o2);
       double right = thrust*((-xaxis-yaxis)*r2o2+0.66*(-dxaxis-dyaxis)*r2o2);
       double[] lr = {left,right};
