@@ -103,7 +103,7 @@ public class Vision extends SubsystemBase {
 		Imgproc.cvtColor(contout,contout,Imgproc.COLOR_GRAY2BGR);
 		// mask out goal
 		Scalar lb = new Scalar(61.0,132.0,96.0);
-		Scalar ub = new Scalar(103.0,230.0,255.0);
+		Scalar ub = new Scalar(103.0,255.0,255.0);
 		Imgproc.cvtColor(out, out, Imgproc.COLOR_BGR2HLS);
 		Core.inRange(out, lb, ub, out);
 
@@ -111,26 +111,36 @@ public class Vision extends SubsystemBase {
 		List<MatOfPoint> contours = new ArrayList<>();
 		Mat hierarchy = new Mat();
 		
-		Imgproc.findContours(out,contours,hierarchy,Imgproc.RETR_TREE,Imgproc.CHAIN_APPROX_SIMPLE);
+		Imgproc.findContours(out,contours,hierarchy,Imgproc.RETR_EXTERNAL,Imgproc.CHAIN_APPROX_SIMPLE);
 		// Imgproc.drawContours(contout, contours, -1, new Scalar(100,100,100), 2);
 		// find untransposed {x,y} positions for each contour
-		ArrayList<double[]> positions = new ArrayList<double[]>();
+		ArrayList<Point> sortPositions = new ArrayList<Point>(); // top-left point, used to sort chains
+		ArrayList<Point> centerPositions = new ArrayList<Point>(); // center of contour from moment
+		ArrayList<RotatedRect> rects = new ArrayList<RotatedRect>(); // rotated rectangle fit to contour
 		for(int i=0; i<contours.size(); i++){
-			//Moments p = Imgproc.moments(contours.get(i), false);
-			MatOfPoint2f newt = new MatOfPoint2f(contours.get(i).toArray());
-			RotatedRect rrect = Imgproc.minAreaRect(newt);
-			Point[] rectPoints = new Point[4];
-			rrect.points(rectPoints);
-			for(int j = 0; j < 4; j++) {
-				Imgproc.line(contout,rectPoints[j],rectPoints[(j+1)%4],new Scalar(100,100,100));
+			List<Point> contPoints = contours.get(i).toList();
+			System.out.println(contPoints.get(0).y+","+contPoints.get(0).x);
+			Moments p = Imgproc.moments(contours.get(i), false);
+			if(p.get_m00() == 0){
+				contours.remove(i);
+				i--;
+			}else{
+				MatOfPoint2f newt = new MatOfPoint2f(contours.get(i).toArray());
+				RotatedRect rrect = Imgproc.minAreaRect(newt);
+				Point[] rectPoints = new Point[4];
+				rrect.points(rectPoints);
+				for(int j = 0; j < 4; j++) {
+					//System.out.print("("+(int)rectPoints[j].x+","+(int)rectPoints[j].y+")");
+					Imgproc.line(contout,rectPoints[j],rectPoints[(j+1)%4],new Scalar(100,100,100), 2);
+				}
+				
+				centerPositions.add(new Point(p.get_m10() / p.get_m00(),p.get_m01() / p.get_m00()));
+				rects.add(rrect);
+				sortPositions.add(contPoints.get(0));
+				Imgproc.circle(contout,centerPositions.get(i),3,new Scalar(0,0,255));
 			}
-			double[] pd;
-			//System.out.println(" scooby ");
-			positions.add(pd = new double[]{rrect.center.x, rrect.center.y});
-			//positions.add(pd = new double[]{(p.get_m01() / p.get_m00()),(p.get_m10() / p.get_m00())});
-			//System.out.println("["+pd[0]+" ,"+pd[1]+"]");
 		}
-		//System.out.println(" --" );
+		System.out.println(" --" );
 		
 		// create list of chains
 		int longind = -1;
@@ -138,7 +148,7 @@ public class Vision extends SubsystemBase {
 		for(int i=contours.size()-1; i>=0; i--){
 			// find close contour
 			int j;
-			for(j=i+1; j<contours.size() && !contourInRange(positions,i,j); j++);
+			for(j=i+1; j<contours.size() && !contourInRange(sortPositions,i,j); j++);
 			// add chain list of other contour if possible
 			ArrayList<Integer> indlist = new ArrayList<Integer>();
 			indlist.add(i);
@@ -155,8 +165,8 @@ public class Vision extends SubsystemBase {
 			//System.out.println("moweee");
 			for(int q = 0; q<indlist.size()-1; q++) {
 				//System.out.println("WOWEEE");
-				Point firstPoint = new Point(positions.get(q)[0], positions.get(q)[1]);
-				Point nextPoint = new Point(positions.get(q+1)[0], positions.get(q+1)[1]);
+				Point firstPoint = centerPositions.get(q);
+				Point nextPoint = centerPositions.get(q+1);
 				Imgproc.line(contout, firstPoint, nextPoint, new Scalar(0,255,0), 5);
 				
 			}
@@ -168,7 +178,7 @@ public class Vision extends SubsystemBase {
 			ArrayList<Integer> goalchain = chains.get(longind);
 			double[] xposs = new double[goalchain.size()];
 			for(int i=0; i<goalchain.size(); i++){
-				xposs[i] = positions.get(goalchain.get(i))[0];
+				xposs[i] = centerPositions.get(goalchain.get(i)).y;
 			}
 			// publish
 			contourInfo.setDoubleArray(xposs);
@@ -180,13 +190,14 @@ public class Vision extends SubsystemBase {
 	}
 
 	// if the other contour is valid to move to as a chain
-	public boolean contourInRange(ArrayList<double[]> positions, int thisindex, int otherindex){
+	public boolean contourInRange(ArrayList<Point> positions, int thisindex, int otherindex){
 		final int ymax = 16;
 		final int xmax = 50;
-		double[] thispos = positions.get(thisindex);
-		double[] otherpos = positions.get(otherindex);
-		boolean withiny = Math.abs(thispos[1] - otherpos[1]) <= ymax;
-		boolean withinx = thispos[0] - otherpos[0] <= xmax && thispos[0] - otherpos[0] >= 0;
+		Point thispos = positions.get(thisindex);
+		Point otherpos = positions.get(otherindex);
+		System.out.println(thispos+"-"+otherpos);
+		boolean withiny = Math.abs(thispos.x - otherpos.x) <= ymax;
+		boolean withinx = thispos.y - otherpos.y <= xmax && thispos.y - otherpos.y >= 0;
 		return withinx && withiny;
 	}
 }
