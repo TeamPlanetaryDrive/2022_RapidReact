@@ -98,7 +98,8 @@ public class Vision extends SubsystemBase {
 	public Mat detectGoal(Mat out, Mat contout) {
 		// transpose so horizontal ordering
 		Core.transpose(out, out);
-
+		contout = Mat.zeros(out.size(),CvType.CV_8UC1);
+		Imgproc.cvtColor(contout,contout,Imgproc.COLOR_GRAY2BGR);
 		// mask out goal
 		Scalar lb = new Scalar(61.0,132.0,96.0);
 		Scalar ub = new Scalar(103.0,230.0,255.0);
@@ -108,7 +109,7 @@ public class Vision extends SubsystemBase {
 		// find contours
 		List<MatOfPoint> contours = new ArrayList<>();
 		Mat hierarchy = new Mat();
-		contout = Mat.zeros(out.size(),CvType.CV_8UC1);
+		
 		Imgproc.findContours(out,contours,hierarchy,Imgproc.RETR_TREE,Imgproc.CHAIN_APPROX_SIMPLE);
 		Imgproc.drawContours(contout, contours, -1, new Scalar(100,100,100), 2);
 		// find untransposed {x,y} positions for each contour
@@ -118,12 +119,12 @@ public class Vision extends SubsystemBase {
 			MatOfPoint2f newt = new MatOfPoint2f(contours.get(i).toArray());
 			RotatedRect rrect = Imgproc.minAreaRect(newt);
 			double[] pd;
-			System.out.println(" scooby ");
+			//System.out.println(" scooby ");
 			positions.add(pd = new double[]{rrect.center.x, rrect.center.y});
 			//positions.add(pd = new double[]{(p.get_m01() / p.get_m00()),(p.get_m10() / p.get_m00())});
-			System.out.println("["+pd[0]+" ,"+pd[1]+"]");
+			//System.out.println("["+pd[0]+" ,"+pd[1]+"]");
 		}
-		System.out.println(" --" );
+		//System.out.println(" --" );
 		
 		// create list of chains
 		int longind = -1;
@@ -150,7 +151,7 @@ public class Vision extends SubsystemBase {
 				//System.out.println("WOWEEE");
 				Point firstPoint = new Point(positions.get(q)[0], positions.get(q)[1]);
 				Point nextPoint = new Point(positions.get(q+1)[0], positions.get(q+1)[1]);
-				Imgproc.line(contout, firstPoint, nextPoint, new Scalar(0,255,0), 10);
+				Imgproc.line(contout, firstPoint, nextPoint, new Scalar(0,255,0), 5);
 				
 			}
 			//System.out.println("balls in yo jaws");
@@ -168,19 +169,18 @@ public class Vision extends SubsystemBase {
 		}
 		Core.transpose(contout, contout);
 		
-		return out;
+		return contout;
 		
 	}
 
 	// if the other contour is valid to move to as a chain
 	public boolean contourInRange(ArrayList<double[]> positions, int thisindex, int otherindex){
-		return true;
-		/*final int ymax = 16;
+		final int ymax = 16;
 		final int xmax = 50;
 		double[] thispos = positions.get(thisindex);
 		double[] otherpos = positions.get(otherindex);
 		boolean withiny = Math.abs(thispos[1] - otherpos[1]) <= ymax;
 		boolean withinx = thispos[0] - otherpos[0] <= xmax && thispos[0] - otherpos[0] >= 0;
-		return withinx && withiny;*/
+		return withinx && withiny;
 	}
 }
