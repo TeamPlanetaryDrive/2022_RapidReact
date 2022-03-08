@@ -30,11 +30,11 @@ public class movement extends CommandBase {
     }
 
     public void initialize() {
-        Robot.Drive.drive(motorSpeeds[0], motorSpeeds[1]);
+        
     }
 
     public void execute() {
-
+        Robot.Drive.drive(motorSpeeds[0], motorSpeeds[1]);
     }
 
     public boolean isFinished() {

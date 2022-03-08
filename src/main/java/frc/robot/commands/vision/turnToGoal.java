@@ -13,26 +13,26 @@ public class turnToGoal extends CommandBase {
     double camCenter = 320.0;
     double tolerance = 20.0;
     double xDiff;
-    double lightThrust = .3;
+    double lightThrust = .75;
     public turnToGoal() {
         this.addRequirements(Robot.Cameras, Robot.Drive);
         contourInfo = NetworkTableInstance.getDefault().getTable("datatable").getEntry("Contour Positions rawr xd nya~");
     }
 
     public void initialize() {
-        
+        System.out.println("hoobop");
     }
 
     public void execute() {
         contourPositions = contourInfo.getDoubleArray(new double[]{0,0,0,0});
         goalSize = contourPositions[0];
-        goalX = contourPositions[1];
-        goalY = contourPositions[2];
+        goalX = contourPositions[2];
+        goalY = contourPositions[1];
         goalSlope = contourPositions[3];
         xDiff = goalX - camCenter;
         if(goalSize < 0) { //case where goal is not seen
             Robot.Drive.drive(-lightThrust, lightThrust);
-        } else if(xDiff < tolerance) { //case where goal is seen, but it is in the center
+        } else if(Math.abs(xDiff) < tolerance) { //case where goal is seen, but it is in the center
             return;
         } else { //case where goal is seen
             if(xDiff > 0) { //goal on right side of image
