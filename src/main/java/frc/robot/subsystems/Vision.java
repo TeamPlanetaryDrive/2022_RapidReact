@@ -32,6 +32,9 @@ public class Vision extends SubsystemBase {
 	CvSink cvSink;
 	NetworkTableEntry totalEntry;
 	NetworkTableEntry contourInfo;
+	final int FRAME_AVG = 12;
+	double slopeavg = 0;
+
 	public void init(){
 		// get entries from NetworkTable
 		NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -168,27 +171,47 @@ public class Vision extends SubsystemBase {
 		}
 		
 		if(longind >= 0 && chains.get(longind).size() > 3) {
-			//draw chain
-			int ch = longind;
-			for(int q = 0; q<chains.get(ch).size()-1; q++) {
-				//System.out.println("WOWEEE");
-				Point firstPoint = centerPositions.get(chains.get(ch).get(q));
-				Point nextPoint = centerPositions.get(chains.get(ch).get(q+1));
-				Imgproc.line(contout, firstPoint, nextPoint, new Scalar((ch%3)%2*255,((ch+1)%3)%2*255,((ch+2)%3)%2*255), 2);
-				
-			}
 			// create list of x positions
 			ArrayList<Integer> goalchain = chains.get(longind);
 			double[] xposs = new double[goalchain.size()];
+			double[] yposs = new double[goalchain.size()];
+			double xtotal = 0;
 			double ytotal = 0;
+			boolean keep = true;
 			for(int i=0; i<goalchain.size(); i++){
 				xposs[i] = centerPositions.get(goalchain.get(i)).y;
-				ytotal += centerPositions.get(goalchain.get(i)).x;
+				yposs[i] = centerPositions.get(goalchain.get(i)).x;
+				xtotal += xposs[i];
+				ytotal += yposs[i];
+				if(i>1){
+					double xd = Math.abs((xposs[i]-xposs[i-1])/(xposs[i-1]-xposs[i-2]));
+					//double yd = Math.abs((yposs[i]-yposs[i-1])/(yposs[i-1]-yposs[i-2]));
+					if(xd<.8 || xd>1.25 ){//|| yd<.5 || yd>2){
+						keep = false;
+					}
+				}
+				
+				if(i<goalchain.size()-1){
+					Scalar color = new Scalar(0,keep?255:0,keep?0:255);
+					Point firstPoint = centerPositions.get(goalchain.get(i));
+					Point nextPoint = centerPositions.get(goalchain.get(i+1));
+					Imgproc.line(contout, firstPoint, nextPoint, color, 2);
+				}
 			}
-			double gsize = Math.abs(xposs[0]-xposs[xposs.length-1]);
-			double gpos = ytotal / xposs.length;
-			// publish
-			contourInfo.setDoubleArray(new double[] {gsize,gpos});
+			if(keep){
+				double gsize = Math.abs(xposs[0]-xposs[xposs.length-1]);
+				double gypos = ytotal / yposs.length;
+				double gslope = (-yposs[0]+yposs[yposs.length-1])/(-xposs[0]+xposs[xposs.length-1]);
+				slopeavg = ((FRAME_AVG-1) * slopeavg + gslope)/FRAME_AVG;
+				double gxpos = xtotal / xposs.length;
+				// publish
+				contourInfo.setDoubleArray(new double[] {gsize,gypos,gxpos,slopeavg});
+			}else{
+				contourInfo.setDoubleArray(new double[] {-1,-1,-1,-1});
+			}
+			
+		}else{
+			contourInfo.setDoubleArray(new double[] {-1,-1,-1,-1});
 		}
 		Core.transpose(contout, contout);
 		
