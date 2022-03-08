@@ -85,7 +85,7 @@ public class RobotMap {
         public static JoystickButton button1_left, button2_left, button3_left, button4_left, button5_left, button8_left, button9_left;
         public static JoystickButton button1_right, button2_right, button3_right, button4_right, button5_right, button8_right;
         */
-        public static JoystickButton aButton, bButton, xButton, yButton, backButton, startButton, leftBumper, rightBumper;
+        public static JoystickButton aButton, bButton, xButton, yButton, backButton, startButton, leftBumper, rightBumper, leftStickButton, rightStickButton;
         public static final int XBOX_PORT = 0;
         public static final XboxController XController = new XboxController(XBOX_PORT);
 
@@ -131,7 +131,8 @@ public class RobotMap {
                 rightBumper = new JoystickButton(XController, 6);
                 backButton = new JoystickButton(XController, 7);
                 startButton = new JoystickButton(XController, 8);
-                
+                leftStickButton = new JoystickButton(XController, 9);
+                rightStickButton = new JoystickButton(XController, 10);
 
                 
                 // lift encoder and motor setup

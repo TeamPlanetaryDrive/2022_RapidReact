@@ -7,6 +7,7 @@
 package frc.robot;
 
 import frc.robot.commands.*;
+import frc.robot.commands.vision.turnToGoal;
 
 /**
  * This class is what binds the controls on the physical operator
@@ -14,8 +15,10 @@ import frc.robot.commands.*;
  */
 public class OI {
 
+    private static final int LEFT_STICK = 0, RIGHT_STICK = 1;
     static double r2o2 = Math.sqrt(2)/2;
     static double thrust = 0.75;
+
 
     static double[] getDriveSpeed() {
       double yaxis = RobotMap.XController.getLeftY();
@@ -65,9 +68,13 @@ public class OI {
     RobotMap.button9_right.whenPressed(new releaseBallRight());
     friccaroo
     */
+    RobotMap.aButton.whenPressed(new turnToGoal());    
     RobotMap.bButton.whenPressed(new testCommand());
     RobotMap.leftBumper.whenHeld(new lift(-1.0));
     RobotMap.rightBumper.whenHeld(new lift(1.0));
+    RobotMap.leftStickButton.whenHeld(new movement(LEFT_STICK));
+    RobotMap.rightStickButton.whenHeld(new movement(RIGHT_STICK));
+
     /*
     Goals for Xbox Controller Button Pressing Mapping
     -------------------------------------------------

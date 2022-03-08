@@ -152,11 +152,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //Robot.Drive.drive(-0.4 * RobotMap.leftJoystick.getY(), 0.4 * RobotMap.rightJoystick.getY());
-    
-    double[] speeds = OI.getDriveSpeed();
-    Robot.Drive.drive(speeds[0], speeds[1]);
+    if(!(RobotMap.XController.getLeftStickButtonPressed() || RobotMap.XController.getRightStickButtonPressed() )) {
+      double[] speeds = OI.getDriveSpeed();
+      Robot.Drive.drive(speeds[0], speeds[1]);
     //MotorTurning.drive(OI.getLiftSpeed(),RobotMap.liftMotor);
-    CommandScheduler.getInstance().run();
+      CommandScheduler.getInstance().run();
+    }
   }
 
   /**
