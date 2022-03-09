@@ -6,7 +6,7 @@ import frc.robot.Robot;
 public class movement extends CommandBase {
     
     private static final int LEFT_STICK = 0, RIGHT_STICK = 1;
-    private double thrust = 0.75, leftMotorSpeed = 0, rightMotorSpeed = 0;
+    private double thrust = 0.4, leftMotorSpeed = 0, rightMotorSpeed = 0;
     private double motorSpeeds[] = {leftMotorSpeed, rightMotorSpeed};
 
     public movement(int movementOrigin) {
