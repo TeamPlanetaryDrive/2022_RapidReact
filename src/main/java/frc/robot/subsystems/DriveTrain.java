@@ -61,8 +61,11 @@ public class DriveTrain extends SubsystemBase {
       break;
       case BBALL:
       double c = 1;
-      left = -thrust * mag * Math.sin(theta) * Math.sqrt(Math.pow(mag,2) + Math.pow(c,2) + 2*mag*c*Math.cos(theta));
-      right = -thrust * mag * Math.sin(theta) * Math.sqrt(Math.pow(mag,2) + Math.pow(c,2) - 2*mag*c*Math.cos(theta));
+      double k = 1;
+      double y = mag * Math.sin(theta);
+      //double ye = 2/(1 + Math.exp(-k*y)) - 1;
+      left = -thrust * y * Math.sqrt(Math.pow(mag,2) + Math.pow(c,2) + 2*mag*c*Math.cos(theta));
+      right = -thrust * y * Math.sqrt(Math.pow(mag,2) + Math.pow(c,2) - 2*mag*c*Math.cos(theta));
       break;
     }
     double[] lr = {left,right};
