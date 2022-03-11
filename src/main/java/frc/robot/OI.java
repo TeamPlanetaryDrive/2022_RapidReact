@@ -15,38 +15,7 @@ import frc.robot.commands.vision.turnToGoal;
  */
 public class OI {
 
-    private static final int LEFT_STICK = 0, RIGHT_STICK = 1;
-    static double r2o2 = Math.sqrt(2)/2;
-    static double thrust = 0.75;
-
-
-    static double[] getDriveSpeed() {
-      double yaxis = RobotMap.XController.getLeftY();
-      double xaxis = RobotMap.XController.getLeftX();
-      double dpadAngle = RobotMap.XController.getPOV()*(Math.PI/180);
-      double dxaxis = Math.sin(dpadAngle);
-      double dyaxis = -Math.cos(dpadAngle);
-      if(dpadAngle < 0) {
-        dxaxis = 0;
-        dyaxis = 0;
-      }
-      double left = thrust*((xaxis-yaxis)*r2o2+0.66*(dxaxis-dyaxis)*r2o2);
-      double right = thrust*((-xaxis-yaxis)*r2o2+0.66*(-dxaxis-dyaxis)*r2o2);
-      double[] lr = {left,right};
-      return lr;
-    }
-    
-    /*
-    static double getLiftSpeed() {
-      double right = RobotMap.XController.getRightBumper()?1.0:0.0;
-      double left = RobotMap.XController.getLeftBumper()?-1.0:0.0;
-      return right + left;
-    }
-    */
-
-    
-    
-    
+    private static final int LEFT_STICK = 0, RIGHT_STICK = 1;    
 
   public OI() {
     

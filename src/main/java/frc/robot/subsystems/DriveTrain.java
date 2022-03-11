@@ -29,6 +29,9 @@ public class DriveTrain extends SubsystemBase {
   //Talon leftMotor = new Talon(RobotMap.LEFT_MOTOR_CHANNEL);
   //Talon rightMotor = new Talon(RobotMap.RIGHT_MOTOR_CHANNEL);
   DifferentialDrive robotDrive;
+  static final double r2o2 = Math.sqrt(2)/2;
+  double thrust = 0.75;
+  public static final int WILLIAM=0,BBALL=1;
 
   public DriveTrain() {
     // calls the subsystem to let it know that it needs to be called as a subsystem
@@ -37,6 +40,43 @@ public class DriveTrain extends SubsystemBase {
     robotDrive.setSafetyEnabled(false);
     // setDefaultCommand(new robotMovement());
   }
+
+  public double[] getDriveSpeed(int mode) {
+    double yaxis = RobotMap.XController.getLeftY();
+    double xaxis = RobotMap.XController.getLeftX();
+    double dpadAngle = RobotMap.XController.getPOV()*(Math.PI/180);
+    double dxaxis = Math.sin(dpadAngle);
+    double dyaxis = -Math.cos(dpadAngle);
+    if(dpadAngle < 0) {
+      dxaxis = 0;
+      dyaxis = 0;
+    }
+    double mag = Math.sqrt(yaxis*yaxis+xaxis*xaxis);
+    double theta = Math.atan2(yaxis,xaxis);
+    double left = 0, right = 0;
+    switch(mode){
+      case WILLIAM: 
+      left = thrust*((xaxis-yaxis)*r2o2+0.66*(dxaxis-dyaxis)*r2o2);
+      right = thrust*((-xaxis-yaxis)*r2o2+0.66*(-dxaxis-dyaxis)*r2o2);
+      break;
+      case BBALL:
+      double c = 1;
+      left = -thrust * mag * Math.sin(theta) * Math.sqrt(Math.pow(mag,2) + Math.pow(c,2) + 2*mag*c*Math.cos(theta));
+      right = -thrust * mag * Math.sin(theta) * Math.sqrt(Math.pow(mag,2) + Math.pow(c,2) - 2*mag*c*Math.cos(theta));
+      break;
+    }
+    double[] lr = {left,right};
+    return lr;
+  }
+  
+  /*
+  static double getLiftSpeed() {
+    double right = RobotMap.XController.getRightBumper()?1.0:0.0;
+    double left = RobotMap.XController.getLeftBumper()?-1.0:0.0;
+    return right + left;
+  }
+  */
+
 
   public void drive(double left, double right) {
     robotDrive.tankDrive(left, right);
