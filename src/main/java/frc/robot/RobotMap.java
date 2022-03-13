@@ -71,7 +71,10 @@ public class RobotMap {
 
         // HARDWARE
         // motors
-        public static Victor lMotor, rMotor, liftMotor, SIW1, SIW2;
+        public static Victor  liftMotor, SIW1, SIW2;
+        
+        public static Victor lMotor = new Victor(LEFT_MOTOR_CHANNEL);
+        public static Victor rMotor = new Victor(RIGHT_MOTOR_CHANNEL);
         public static MotorController lift;
 
         // state for lift motor
@@ -88,6 +91,7 @@ public class RobotMap {
         public static JoystickButton aButton, bButton, xButton, yButton, backButton, startButton, leftBumper, rightBumper, leftStickButton, rightStickButton;
         public static final int XBOX_PORT = 0;
         public static final XboxController XController = new XboxController(XBOX_PORT);
+
 
         /* new stuff */
         public static final int CLIMB_MOTOR_CHANNEL_1 = 2856, CLIMB_MOTOR_CHANNEL_2 = 2857;
@@ -115,8 +119,6 @@ public class RobotMap {
         // public static int rangefinderModule = 1;
         public static void init() {
                 // initializing motors
-                lMotor = new Victor(LEFT_MOTOR_CHANNEL);
-                rMotor = new Victor(RIGHT_MOTOR_CHANNEL);
                 liftMotor = new Victor(LIFT_CHANNEL);
                 //SIW1 = new Victor(spinTakeWheel1);
                 //SIW2 = new Victor(spinTakeWheel2);

@@ -7,6 +7,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -34,6 +35,7 @@ public class Robot extends TimedRobot {
   //public static Shooter Launcher;
   //public static Climb Climber;
   public static OI m_oi;
+  DifferentialDrive m_drive = new DifferentialDrive(RobotMap.lMotor, RobotMap.rMotor);
 
   public Command m_autonomousCommand;
   public SendableChooser<Command> m_chooser;
@@ -152,12 +154,14 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //Robot.Drive.drive(-0.4 * RobotMap.leftJoystick.getY(), 0.4 * RobotMap.rightJoystick.getY());
-    if(!(RobotMap.XController.getLeftStickButtonPressed() || RobotMap.XController.getRightStickButtonPressed() )) {
+    /*if(!(RobotMap.XController.getLeftStickButtonPressed() || RobotMap.XController.getRightStickButtonPressed() )) {
       double[] speeds = Drive.getDriveSpeed(DriveTrain.WILLIAM);
       Robot.Drive.drive(speeds[0], speeds[1]);
     //MotorTurning.drive(OI.getLiftSpeed(),RobotMap.liftMotor);
       CommandScheduler.getInstance().run();
-    }
+    }*/
+    m_drive.arcadeDrive(-RobotMap.XController.getLeftY(),RobotMap.XController.getLeftX());
+    //m_drive.curvatureDrive(-RobotMap.XController.getLeftY(),RobotMap.XController.getLeftX(), RobotMap.XController.getLeftStickButtonPressed());
   }
 
   /**
