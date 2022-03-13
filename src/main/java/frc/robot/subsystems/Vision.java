@@ -30,10 +30,12 @@ import edu.wpi.first.wpilibj.util.Color;
 public class Vision extends SubsystemBase {
 
 	CvSink cvSink;
-	NetworkTableEntry totalEntry;
-	NetworkTableEntry contourInfo;
+	NetworkTableEntry totalEntry, contourInfo, goalBlurEntry;
 	final int FRAME_AVG = 12;
 	double slopeavg = 0;
+
+	ArrayList<MatOfPoint> contours;
+	Mat hierarchy;
 
 	public void init(){
 		// get entries from NetworkTable
@@ -41,6 +43,7 @@ public class Vision extends SubsystemBase {
       	NetworkTable table = inst.getTable("datatable");
       	totalEntry = table.getEntry("Top Left Pixel");
 		contourInfo = table.getEntry("Contour Positions rawr xd nya~");
+		goalBlurEntry = table.getEntry("blrur");
 
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
@@ -112,8 +115,8 @@ public class Vision extends SubsystemBase {
 		Imgproc.dilate(out,out,makeKernel(3));
 
 		// find contours
-		List<MatOfPoint> contours = new ArrayList<>();
-		Mat hierarchy = new Mat();
+		contours = new ArrayList<>();
+		hierarchy = new Mat();
 		
 		Imgproc.findContours(out,contours,hierarchy,Imgproc.RETR_EXTERNAL,Imgproc.CHAIN_APPROX_SIMPLE);
 		// Imgproc.drawContours(contout, contours, -1, new Scalar(100,100,100), 2);
@@ -170,6 +173,7 @@ public class Vision extends SubsystemBase {
 			}
 		}
 		
+		// publish info on goal contour
 		if(longind >= 0 && chains.get(longind).size() > 3) {
 			// create list of x positions
 			ArrayList<Integer> goalchain = chains.get(longind);
@@ -183,6 +187,7 @@ public class Vision extends SubsystemBase {
 				yposs[i] = centerPositions.get(goalchain.get(i)).x;
 				xtotal += xposs[i];
 				ytotal += yposs[i];
+				// reject uneven goals
 				if(i>1){
 					double xd = Math.abs((xposs[i]-xposs[i-1])/(xposs[i-1]-xposs[i-2]));
 					//double yd = Math.abs((yposs[i]-yposs[i-1])/(yposs[i-1]-yposs[i-2]));
@@ -190,7 +195,7 @@ public class Vision extends SubsystemBase {
 						keep = false;
 					}
 				}
-				
+				// draw goal lines
 				if(i<goalchain.size()-1){
 					Scalar color = new Scalar(0,keep?255:0,keep?0:255);
 					Point firstPoint = centerPositions.get(goalchain.get(i));
@@ -215,6 +220,17 @@ public class Vision extends SubsystemBase {
 		}
 		Core.transpose(contout, contout);
 		
+		// check for blurred goal as a rotated rect
+		boolean blurSpotted = false;
+		for(RotatedRect rr : rects){
+			double ratio = Math.max(rr.size.width,rr.size.height)/Math.min(rr.size.width,rr.size.height);
+			if(ratio > 5){
+				blurSpotted = true;
+			}
+			goalBlurEntry.setDouble(ratio);
+		}
+		//goalBlurEntry.setBoolean(blurSpotted);
+
 		return contout;
 		
 	}

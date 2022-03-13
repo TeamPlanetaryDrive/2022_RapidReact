@@ -71,10 +71,10 @@ public class RobotMap {
 
         // HARDWARE
         // motors
-        public static Victor  liftMotor, SIW1, SIW2;
+        public static Victor lMotor, rMotor, liftMotor, SIW1, SIW2;
         
-        public static Victor lMotor = new Victor(LEFT_MOTOR_CHANNEL);
-        public static Victor rMotor = new Victor(RIGHT_MOTOR_CHANNEL);
+        //public static Victor lMotor = new Victor(LEFT_MOTOR_CHANNEL);
+        //public static Victor rMotor = new Victor(RIGHT_MOTOR_CHANNEL);
         public static MotorController lift;
 
         // state for lift motor
@@ -122,6 +122,8 @@ public class RobotMap {
                 liftMotor = new Victor(LIFT_CHANNEL);
                 //SIW1 = new Victor(spinTakeWheel1);
                 //SIW2 = new Victor(spinTakeWheel2);
+                lMotor = new Victor(LEFT_MOTOR_CHANNEL);
+                rMotor = new Victor(RIGHT_MOTOR_CHANNEL);
                 rMotor.setInverted(true);
 
                 //map each button to a JoystickButton
