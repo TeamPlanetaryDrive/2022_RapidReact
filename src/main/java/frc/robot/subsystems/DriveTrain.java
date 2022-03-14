@@ -31,7 +31,7 @@ public class DriveTrain extends SubsystemBase {
   DifferentialDrive robotDrive;
   static final double r2o2 = Math.sqrt(2)/2;
   double thrust = 0.75;
-  public static final int WILLIAM=0,BBALL=1;
+  public static final int WILLIAM=0,BBALL=1,BURGERKING=2;
 
   public DriveTrain() {
     // calls the subsystem to let it know that it needs to be called as a subsystem
@@ -66,6 +66,13 @@ public class DriveTrain extends SubsystemBase {
       //double ye = 2/(1 + Math.exp(-k*y)) - 1;
       left = -thrust * y * Math.sqrt(Math.pow(mag,2) + Math.pow(c,2) + 2*mag*c*Math.cos(theta));
       right = -thrust * y * Math.sqrt(Math.pow(mag,2) + Math.pow(c,2) - 2*mag*c*Math.cos(theta));
+      break;
+      case BURGERKING:
+      double speed = Math.sqrt(Math.pow(RobotMap.lMotor.get(),2)+Math.pow(RobotMap.rMotor.get(),2));
+      double ratio = Math.min(1,speed/1);
+      double tuorn = (1-ratio) * xaxis + ratio * xaxis * Math.abs(yaxis);
+      left = thrust*((tuorn-yaxis)*r2o2);
+      right = thrust*((-tuorn-yaxis)*r2o2);
       break;
     }
     double[] lr = {left,right};
