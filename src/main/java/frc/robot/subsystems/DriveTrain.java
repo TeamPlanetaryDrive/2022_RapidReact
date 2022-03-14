@@ -32,6 +32,7 @@ public class DriveTrain extends SubsystemBase {
   static final double r2o2 = Math.sqrt(2)/2;
   double thrust = 0.75;
   public static final int WILLIAM=0,BBALL=1;
+  private double stationaryTolerance = -1;
 
   public DriveTrain() {
     // calls the subsystem to let it know that it needs to be called as a subsystem
@@ -54,19 +55,24 @@ public class DriveTrain extends SubsystemBase {
     double mag = Math.sqrt(yaxis*yaxis+xaxis*xaxis);
     double theta = Math.atan2(yaxis,xaxis);
     double left = 0, right = 0;
-    switch(mode){
-      case WILLIAM: 
-      left = thrust*((xaxis-yaxis)*r2o2+0.66*(dxaxis-dyaxis)*r2o2);
-      right = thrust*((-xaxis-yaxis)*r2o2+0.66*(-dxaxis-dyaxis)*r2o2);
-      break;
-      case BBALL:
-      double c = 1;
-      double k = 1;
-      double y = mag * Math.sin(theta);
-      //double ye = 2/(1 + Math.exp(-k*y)) - 1;
-      left = -thrust * y * Math.sqrt(Math.pow(mag,2) + Math.pow(c,2) + 2*mag*c*Math.cos(theta));
-      right = -thrust * y * Math.sqrt(Math.pow(mag,2) + Math.pow(c,2) - 2*mag*c*Math.cos(theta));
-      break;
+    if(!(xaxis < stationaryTolerance && yaxis < stationaryTolerance)) {
+      switch(mode){
+        case WILLIAM: 
+          left = thrust*((xaxis-yaxis)*r2o2+0.66*(dxaxis-dyaxis)*r2o2);
+          right = thrust*((-xaxis-yaxis)*r2o2+0.66*(-dxaxis-dyaxis)*r2o2);
+          System.out.println("SCHPEED: " + Math.sqrt(Math.pow(RobotMap.lMotor.get(), 2) + Math.pow(RobotMap.rMotor.get(), 2)));
+          break;
+        case BBALL:
+          double c = 1;
+          double k = 1;
+          double fixit = 0;
+          double y = mag * Math.sin(theta);
+          // System.out.println("(" + xaxis + ", " + yaxis + ")");
+          //double ye = 2/(1 + Math.exp(-k*y)) - 1;
+          left = -thrust * fixit * yaxis * Math.sqrt(Math.pow(mag,2) + Math.pow(c,2) + 2*mag*c*Math.cos(theta));
+          right = -thrust * fixit * yaxis * Math.sqrt(Math.pow(mag,2) + Math.pow(c,2) - 2*mag*c*Math.cos(theta));
+          break;
+      }
     }
     double[] lr = {left,right};
     return lr;

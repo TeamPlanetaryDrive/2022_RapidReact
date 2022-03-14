@@ -13,9 +13,10 @@ public class turnToGoal extends CommandBase {
     double camCenter = 320.0;
     double tolerance = 20.0;
     double xDiff;
-    double lightThrust = 1;
+    double lightThrust = 0.7;
     boolean finish = false;
     double[] defArray = {0,0,0,0};
+    int frameCount = 0;
     
     public turnToGoal() {
         this.addRequirements(Robot.Cameras, Robot.Drive);
@@ -34,6 +35,7 @@ public class turnToGoal extends CommandBase {
         goalY = contourPositions[1];
         goalSlope = contourPositions[3];
         xDiff = goalX - camCenter;
+        ++frameCount;
         if(goalSize < 0) { //case where goal is not seen
             Robot.Drive.drive(-lightThrust/2, lightThrust/2);
             System.out.println("no see");
@@ -42,13 +44,23 @@ public class turnToGoal extends CommandBase {
             System.out.println("we did it");
         } else { //case where goal is seen
             if(xDiff > 0) { //goal on right side of image
-                Robot.Drive.drive(lightThrust/2, -lightThrust/2);
+                if(frameCount < 6) {
+                    Robot.Drive.drive(lightThrust/2, -lightThrust/2);
+                } else {
+                    Robot.Drive.drive(0, 0);
+                }
                 System.out.println("right");
             } else { //goal on left side of image
-                Robot.Drive.drive(-lightThrust/2, lightThrust/2);
+                if(frameCount < 6) {
+                    Robot.Drive.drive(-lightThrust/2, lightThrust/2);
+                } else {
+                    Robot.Drive.drive(0, 0);
+                }
                 System.out.println("left");
             }
         }
+        if(frameCount > 40) 
+            frameCount = 0;
     }
 
     public boolean isFinished() {

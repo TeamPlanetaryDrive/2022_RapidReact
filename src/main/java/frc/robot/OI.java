@@ -15,7 +15,7 @@ import frc.robot.commands.vision.turnToGoal;
  */
 public class OI {
 
-    private static final int LEFT_STICK = 0, RIGHT_STICK = 1;    
+    private static final int LEFT_STICK_PRESS = 0, RIGHT_STICK_PRESS = 1;    
 
   public OI() {
     
@@ -41,8 +41,8 @@ public class OI {
     RobotMap.bButton.whenPressed(new testCommand());
     RobotMap.leftBumper.whenHeld(new lift(-1.0));
     RobotMap.rightBumper.whenHeld(new lift(1.0));
-    RobotMap.leftStickButton.whenHeld(new movement(LEFT_STICK));
-    RobotMap.rightStickButton.whenHeld(new movement(RIGHT_STICK));
+    RobotMap.leftStickButton.whenHeld(new movement(LEFT_STICK_PRESS));
+    RobotMap.rightStickButton.whenHeld(new movement(RIGHT_STICK_PRESS));
 
     /*
     Goals for Xbox Controller Button Pressing Mapping

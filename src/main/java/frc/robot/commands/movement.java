@@ -5,18 +5,18 @@ import frc.robot.Robot;
 
 public class movement extends CommandBase {
     
-    private static final int LEFT_STICK = 0, RIGHT_STICK = 1;
+    private static final int LEFT_STICK_PRESS = 0, RIGHT_STICK_PRESS = 1;
     private double thrust = 0.75, leftMotorSpeed = 0, rightMotorSpeed = 0;
     private double motorSpeeds[] = {leftMotorSpeed, rightMotorSpeed};
 
     public movement(int movementOrigin) {
         addRequirements(Robot.Drive);
         switch (movementOrigin) {
-            case LEFT_STICK:
+            case LEFT_STICK_PRESS:
                 leftMotorSpeed = -thrust;
                 rightMotorSpeed = thrust;
                 break;
-            case RIGHT_STICK:
+            case RIGHT_STICK_PRESS:
                 leftMotorSpeed = thrust;
                 rightMotorSpeed = -thrust;
                 break;
@@ -34,6 +34,7 @@ public class movement extends CommandBase {
     }
 
     public void execute() {
+        // System.out.println("vroom vroom");
         Robot.Drive.drive(motorSpeeds[0], motorSpeeds[1]);
     }
 
