@@ -49,13 +49,16 @@ public class RobotMap {
                         DRIVE_PID_ANGLE_KP = 0.02, DRIVE_PID_ANGLE_KI = 0.001, DRIVE_PID_ANGLE_KD = 0.0;
 
         // Digital (0-9, 10-25)
-        public static int LEFT_MOTOR_CHANNEL = 0, RIGHT_MOTOR_CHANNEL = 1;
+        // 2019 bot
+        //public static int LEFT_MOTOR_CHANNEL = 0, RIGHT_MOTOR_CHANNEL = 1;
+        // 2022 bot
+        public static int LEFT_MOTOR_CHANNEL = 8, RIGHT_MOTOR_CHANNEL = 9;
 
         // motor based
         public static int LIFT_CHANNEL = 2;
         //outlining spintake motors, placeholder channels
-        public static int spinTakeWheel1 = 1;
-        public static int spinTakeWheel2 = 2;
+        public static int SPINTAKE_CHANNEL_L = 0;
+        public static int SPINTAKE_CHANNEL_R = 1;
         
                         // enconder channels
         // not final yet
@@ -66,12 +69,12 @@ public class RobotMap {
         // RIGHT_ENC_CHANNEL_B = 3;
 
         // states for gripper
-        public static final boolean GRIPPER_EXTEND = true, GRIPPER_RETRACT = false;
+        //public static final boolean GRIPPER_EXTEND = true, GRIPPER_RETRACT = false;
         public static boolean pneumaticsStart = false;
 
         // HARDWARE
         // motors
-        public static Victor lMotor, rMotor, liftMotor, SIW1, SIW2;
+        public static Victor liftMotor;//, spinTakeMotorL, spinTakeMotorR, lMotor, rMotor;
         
         //public static Victor lMotor = new Victor(LEFT_MOTOR_CHANNEL);
         //public static Victor rMotor = new Victor(RIGHT_MOTOR_CHANNEL);
@@ -94,19 +97,19 @@ public class RobotMap {
 
 
         /* new stuff */
-        public static final int CLIMB_MOTOR_CHANNEL_1 = 2856, CLIMB_MOTOR_CHANNEL_2 = 2857;
-        public static final int WINDOW_MOTOR_CHANNEL = 2856;
-        public static final int SHOOTER_PISTON_CHANNEL_FORWARD = 2856, SHOOTER_PISTON_CHANNEL_REVERSE = 2758;
-        public static final int SHOOTER_MOTOR_CHANNEL_1 = 2858, SHOOTER_MOTOR_CHANNEL_2 = 2656;
-        public static final int GATE_SERVO_CHANNEL_1 = 3457, GATE_SERVO_CHANNEL_2 = 3446;
+        //public static final int CLIMB_MOTOR_CHANNEL_1 = 2856, CLIMB_MOTOR_CHANNEL_2 = 2857;
+        //public static final int WINDOW_MOTOR_CHANNEL = 2856;
+        //public static final int SHOOTER_PISTON_CHANNEL_FORWARD = 2856, SHOOTER_PISTON_CHANNEL_REVERSE = 2758;
+        //public static final int SHOOTER_MOTOR_CHANNEL_1 = 2858, SHOOTER_MOTOR_CHANNEL_2 = 2656;
+        //public static final int GATE_SERVO_CHANNEL_1 = 3457, GATE_SERVO_CHANNEL_2 = 3446;
         
-        public static final int CLIMB_ENCODER_CHANNEL_A = 6969, CLIMB_ENCODER_CHANNEL_B = 6969;
-        public static final int FRAME_ENCODER_CHANNEL_A = 2432, FRAME_ENCODER_CHANNEL_B = 3423;
+        //public static final int CLIMB_ENCODER_CHANNEL_A = 6969, CLIMB_ENCODER_CHANNEL_B = 6969;
+        //public static final int FRAME_ENCODER_CHANNEL_A = 2432, FRAME_ENCODER_CHANNEL_B = 3423;
 
-        public static Victor climbL, climbR, shootL, shootR, windowMotor;
-        public static Encoder climbEncoder, frameEncoder;
-        public static Servo barrierL, barrierR;
-        public static DoubleSolenoid framePiston;
+        //public static Victor climbL, climbR, shootL, shootR, windowMotor;
+        //public static Encoder climbEncoder, frameEncoder;
+        //public static Servo barrierL, barrierR;
+        //public static DoubleSolenoid framePiston;
 
         // For example to map the left and right motors, you could define the
         // following variables to use with your drivetrain subsystem.
@@ -119,12 +122,13 @@ public class RobotMap {
         // public static int rangefinderModule = 1;
         public static void init() {
                 // initializing motors
-                liftMotor = new Victor(LIFT_CHANNEL);
-                //SIW1 = new Victor(spinTakeWheel1);
-                //SIW2 = new Victor(spinTakeWheel2);
+               liftMotor = new Victor(LIFT_CHANNEL);
+                /*spinTakeMotorL = new Victor(SPINTAKE_CHANNEL_L);
+                spinTakeMotorR = new Victor(SPINTAKE_CHANNEL_R);
+                spinTakeMotorR.setInverted(true);
                 lMotor = new Victor(LEFT_MOTOR_CHANNEL);
                 rMotor = new Victor(RIGHT_MOTOR_CHANNEL);
-                rMotor.setInverted(true);
+                rMotor.setInverted(true);*/
 
                 //map each button to a JoystickButton
                 aButton = new JoystickButton(XController, 1);

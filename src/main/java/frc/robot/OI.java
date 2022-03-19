@@ -7,7 +7,9 @@
 package frc.robot;
 
 import frc.robot.commands.*;
-import frc.robot.commands.vision.turnToGoal;
+import frc.robot.commands.vision.*;
+import frc.robot.commands.shooting.*;
+
 
 /**
  * This class is what binds the controls on the physical operator
@@ -39,8 +41,11 @@ public class OI {
     */
     RobotMap.aButton.whenPressed(new turnToGoal());    
     RobotMap.bButton.whenPressed(new testCommand());
-    RobotMap.leftBumper.whenHeld(new lift(-1.0));
-    RobotMap.rightBumper.whenHeld(new lift(1.0));
+    RobotMap.xButton.whenPressed(new turnToBall());
+    RobotMap.yButton.whenPressed(new climb());
+    //RobotMap.leftBumper.whenHeld(new intakeFull());
+    RobotMap.rightBumper.whenHeld(new shootFull());
+    
     RobotMap.leftStickButton.whenHeld(new movement(LEFT_STICK_PRESS));
     RobotMap.rightStickButton.whenHeld(new movement(RIGHT_STICK_PRESS));
 
@@ -52,7 +57,7 @@ public class OI {
     Right Stick: Manual Shooter Control (X)
     Left Trigger: Spintake Wheels (H)
     Right Trigger: Spin Shooter Wheels (H)
-    Left Bumper: Open Gates for a time interval (H/P)
+    Left Bumper: Group Command Intake (P)
     Right Bumper: Group Command Shoot (P)
     X: Turn to Ball (P)
     Y: Climb (P)

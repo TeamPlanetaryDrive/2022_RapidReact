@@ -30,12 +30,12 @@ public class Robot extends TimedRobot {
   public static DriveTrain Drive;// could be redundent , if we delete drivetrain get rid of this
   //public static Lift Elevator; // elevator for gripper
   public static Vision Cameras; // used for the vision class as needed
+  public static Intake Spintake;
   //public static Barriers Gates;
   // public static Multi MultiSystem;   // contains shooter, intake, rotator
   //public static Shooter Launcher;
   //public static Climb Climber;
   public static OI m_oi;
-  //DifferentialDrive m_drive = new DifferentialDrive(RobotMap.lMotor, RobotMap.rMotor);
 
   public Command m_autonomousCommand;
   public SendableChooser<Command> m_chooser;
@@ -51,6 +51,7 @@ public class Robot extends TimedRobot {
     
     Drive = new DriveTrain();
     Cameras = new Vision();
+    Spintake = new Intake();
     //Gates = new Gates();
     // MultiSystem = new Multi();
     //Launcher = new Shooter();
@@ -154,14 +155,11 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //Robot.Drive.drive(-0.4 * RobotMap.leftJoystick.getY(), 0.4 * RobotMap.rightJoystick.getY());
-    if(!(RobotMap.XController.getLeftStickButtonPressed() || RobotMap.XController.getRightStickButtonPressed() )) {
-      double[] speeds = Drive.getDriveSpeed(DriveTrain.BURGERKING);
-      Robot.Drive.drive(speeds[0], speeds[1]);
+    
     //MotorTurning.drive(OI.getLiftSpeed(),RobotMap.liftMotor);
-      CommandScheduler.getInstance().run();
-    }
-    //m_drive.arcadeDrive(-RobotMap.XController.getLeftY(),RobotMap.XController.getLeftX());
-    //m_drive.curvatureDrive(-RobotMap.XController.getLeftY(),RobotMap.XController.getLeftX(), RobotMap.XController.getLeftStickButtonPressed());
+    CommandScheduler.getInstance().run();
+    //}
+    
   }
 
   /**

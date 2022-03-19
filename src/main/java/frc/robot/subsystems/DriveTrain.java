@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -31,13 +32,17 @@ public class DriveTrain extends SubsystemBase {
   DifferentialDrive robotDrive;
   static final double r2o2 = Math.sqrt(2)/2;
   double thrust = 0.75;
-  public static final int WILLIAM=0,BBALL=1,BURGERKING=2;
-  private double stationaryTolerance = -1;
+  public static final int ARCADE=-1,WILLIAM=0,BBALL=1,BURGERKING=2;
+  private double stationaryTolerance = 0.05;
+  Victor lMotor, rMotor;
 
   public DriveTrain() {
     // calls the subsystem to let it know that it needs to be called as a subsystem
     super();
-    robotDrive = new DifferentialDrive(RobotMap.lMotor, RobotMap.rMotor);
+    lMotor = new Victor(RobotMap.LEFT_MOTOR_CHANNEL);
+    rMotor = new Victor(RobotMap.RIGHT_MOTOR_CHANNEL);
+    rMotor.setInverted(true);
+    robotDrive = new DifferentialDrive(lMotor, rMotor);
     robotDrive.setSafetyEnabled(false);
     // setDefaultCommand(new robotMovement());
   }
@@ -55,12 +60,13 @@ public class DriveTrain extends SubsystemBase {
     double mag = Math.sqrt(yaxis*yaxis+xaxis*xaxis);
     double theta = Math.atan2(yaxis,xaxis);
     double left = 0, right = 0;
-    if(!(xaxis < stationaryTolerance && yaxis < stationaryTolerance)) {
+    if(!(Math.abs(xaxis) < stationaryTolerance && Math.abs(yaxis) < stationaryTolerance)) {
       switch(mode){
         case WILLIAM: 
           left = thrust*((xaxis-yaxis)*r2o2+0.66*(dxaxis-dyaxis)*r2o2);
           right = thrust*((-xaxis-yaxis)*r2o2+0.66*(-dxaxis-dyaxis)*r2o2);
-          System.out.println("SCHPEED: " + Math.sqrt(Math.pow(RobotMap.lMotor.get(), 2) + Math.pow(RobotMap.rMotor.get(), 2)));
+          System.out.println(left + ", " + right);
+          //System.out.println("SCHPEED: " + Math.sqrt(Math.pow(lMotor.get(), 2) + Math.pow(rMotor.get(), 2)));
           break;
         case BBALL:
           double c = 1;
@@ -73,11 +79,12 @@ public class DriveTrain extends SubsystemBase {
           right = -thrust * fixit * yaxis * Math.sqrt(Math.pow(mag,2) + Math.pow(c,2) - 2*mag*c*Math.cos(theta));
           break;
         case BURGERKING:
-          double speed = Math.sqrt(Math.pow(RobotMap.lMotor.get(),2)+Math.pow(RobotMap.rMotor.get(),2));
+          double speed = Math.sqrt(Math.pow(lMotor.get(),2)+Math.pow(rMotor.get(),2));
           double ratio = Math.min(1,speed/1);
           double tuorn = (1-ratio) * xaxis + ratio * xaxis * Math.abs(yaxis);
           left = thrust*((tuorn-yaxis)*r2o2);
           right = thrust*((-tuorn-yaxis)*r2o2);
+          System.out.println(rMotor.getChannel() + " motor kingspeed:" + rMotor.get());
           break;
       }
     }
@@ -103,11 +110,23 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public MotorController getSPRight() {
-    return RobotMap.rMotor;
+    return rMotor;
   }
 
   public MotorController getSPLeft() {
-    return RobotMap.lMotor;
+    return lMotor;
+  }
+
+  public void periodic(){
+    int mode = WILLIAM;
+    if(mode == ARCADE){
+      robotDrive.arcadeDrive(-RobotMap.XController.getLeftY(),RobotMap.XController.getLeftX());
+      //m_drive.curvatureDrive(-RobotMap.XController.getLeftY(),RobotMap.XController.getLeftX(), RobotMap.XController.getLeftStickButtonPressed());
+    }
+    else if(!(RobotMap.XController.getLeftStickButtonPressed() || RobotMap.XController.getRightStickButtonPressed() )) {
+      double[] speeds = getDriveSpeed(mode);
+      drive(speeds[0], speeds[1]);
+    }
   }
 
 
