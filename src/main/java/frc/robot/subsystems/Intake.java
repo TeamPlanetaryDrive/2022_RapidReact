@@ -15,11 +15,14 @@ public class Intake extends SubsystemBase {
     
     public void periodic() {
         double[] speeds = getSpeed();
-        spin(speeds[0],speeds[1]);
+        spin(speeds[0]/1.7,speeds[1]/1.7);
     }
 
     public static double[] getSpeed() {
-        return(new double[] {RobotMap.XController.getLeftTriggerAxis(), RobotMap.XController.getLeftTriggerAxis()});
+        if(RobotMap.XController.getRightTriggerAxis()>0)
+            return(new double[] {RobotMap.XController.getRightTriggerAxis(), RobotMap.XController.getRightTriggerAxis()});
+        else
+            return(new double[] {-RobotMap.XController.getLeftTriggerAxis(), -RobotMap.XController.getLeftTriggerAxis()});
     }
 
     public void spin(double left, double right){

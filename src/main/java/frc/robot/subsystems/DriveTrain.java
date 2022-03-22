@@ -32,7 +32,7 @@ public class DriveTrain extends SubsystemBase {
   DifferentialDrive robotDrive;
   static final double r2o2 = Math.sqrt(2)/2;
   double thrust = 0.75;
-  public static final int ARCADE=-1,WILLIAM=0,BBALL=1,BURGERKING=2;
+  public static final int ARCADE=-1,WILLIAM=0,BBALL=1,BURGERKING=2,JAEGER=3;
   private double stationaryTolerance = 0.05;
   Victor lMotor, rMotor;
 
@@ -86,6 +86,10 @@ public class DriveTrain extends SubsystemBase {
           right = thrust*((-tuorn-yaxis)*r2o2);
           System.out.println(rMotor.getChannel() + " motor kingspeed:" + rMotor.get());
           break;
+        case JAEGER:
+          left = thrust;
+          right = thrust;
+        break;
       }
     }
     double[] lr = {left,right};
@@ -102,7 +106,7 @@ public class DriveTrain extends SubsystemBase {
 
 
   public void drive(double left, double right) {
-    robotDrive.tankDrive(left, right);
+    //robotDrive.tankDrive(left, right);
   }
 
   public DifferentialDrive getDrive() {

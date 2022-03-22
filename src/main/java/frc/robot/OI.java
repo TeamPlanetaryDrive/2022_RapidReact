@@ -7,6 +7,9 @@
 package frc.robot;
 
 import frc.robot.commands.*;
+import frc.robot.commands.Intake.intakeCBT;
+import frc.robot.commands.Intake.intakeDTF;
+import frc.robot.commands.Intake.intakeFull;
 import frc.robot.commands.vision.*;
 import frc.robot.commands.shooting.*;
 
@@ -43,8 +46,8 @@ public class OI {
     RobotMap.bButton.whenPressed(new testCommand());
     RobotMap.xButton.whenPressed(new turnToBall());
     RobotMap.yButton.whenPressed(new climb());
-    //RobotMap.leftBumper.whenHeld(new intakeFull());
-    RobotMap.rightBumper.whenHeld(new shootFull());
+    RobotMap.leftBumper.whenHeld(new intakeCBT());
+    RobotMap.rightBumper.whenHeld(new intakeDTF());
     
     RobotMap.leftStickButton.whenHeld(new movement(LEFT_STICK_PRESS));
     RobotMap.rightStickButton.whenHeld(new movement(RIGHT_STICK_PRESS));
