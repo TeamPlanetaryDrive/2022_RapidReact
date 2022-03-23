@@ -7,7 +7,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -110,19 +109,6 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     System.out.println(SmartDashboard.getKeys());
     m_autonomousCommand = m_chooser.getSelected();
-
-    //Command autoSelected
-    //autoSelected.schedule();
-    
-    // switch(autoSelected) { 
-    //   case "auto2": 
-    //     m_autonomousCommand = new auto2(); 
-    //     break; 
-    //   case "Default Auto": 
-    //   default: 
-    //     autonomousCommand = new ExampleCommand(); 
-    //     break; 
-    //   }
     
   }
 
@@ -156,9 +142,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    //Robot.Drive.drive(-0.4 * RobotMap.leftJoystick.getY(), 0.4 * RobotMap.rightJoystick.getY());
-    
-    //MotorTurning.drive(OI.getLiftSpeed(),RobotMap.liftMotor);
     CommandScheduler.getInstance().run();
     //}
     

@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 */
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -64,14 +63,6 @@ public class RobotMap {
                         // enconder channels
         // not final yet
         public static int LIFT_ENC_CHANNEL_A = 0, LIFT_ENC_CHANNEL_B = 1;
-        // LEFT_ENC_CHANNEL_A = 0,
-        // LEFT_ENC_CHANNEL_B = 1,
-        // RIGHT_ENC_CHANNEL_A = 2,
-        // RIGHT_ENC_CHANNEL_B = 3;
-
-        // states for gripper
-        //public static final boolean GRIPPER_EXTEND = true, GRIPPER_RETRACT = false;
-        //public static boolean pneumaticsStart = false;
 
         // HARDWARE
         // motors
@@ -84,32 +75,11 @@ public class RobotMap {
         // state for lift motor
         public static boolean liftStart = false;
 
-        // joystick variables
-        /* Logitech Attack 3? more like Logitech Sucks 3 B)
-        public static final int LEFT_JOYSTICK_PORT = 0, RIGHT_JOYSTICK_PORT = 1;
-        public static final Joystick leftJoystick = new Joystick(LEFT_JOYSTICK_PORT),
-                rightJoystick = new Joystick(RIGHT_JOYSTICK_PORT);
-        public static JoystickButton button1_left, button2_left, button3_left, button4_left, button5_left, button8_left, button9_left;
-        public static JoystickButton button1_right, button2_right, button3_right, button4_right, button5_right, button8_right;
-        */
+        
         public static JoystickButton aButton, bButton, xButton, yButton, backButton, startButton, leftBumper, rightBumper, leftStickButton, rightStickButton;
         public static final int XBOX_PORT = 1;
         public static final XboxController XController = new XboxController(XBOX_PORT);
 
-
-        /* new stuff */
-        //public static final int CLIMB_MOTOR_CHANNEL_1 = 2856, CLIMB_MOTOR_CHANNEL_2 = 2857;
-        //public static final int WINDOW_MOTOR_CHANNEL = 2856;
-        //public static final int SHOOTER_PISTON_CHANNEL_FORWARD = 2856, SHOOTER_PISTON_CHANNEL_REVERSE = 2758;
-        //public static final int SHOOTER_MOTOR_CHANNEL_1 = 2858, SHOOTER_MOTOR_CHANNEL_2 = 2656;
-        //public static final int GATE_SERVO_CHANNEL_1 = 3457, GATE_SERVO_CHANNEL_2 = 3446;
-        
-        //public static final int CLIMB_ENCODER_CHANNEL_A = 6969, CLIMB_ENCODER_CHANNEL_B = 6969;
-        //public static final int FRAME_ENCODER_CHANNEL_A = 2432, FRAME_ENCODER_CHANNEL_B = 3423;
-
-        //public static Victor climbL, climbR, shootL, shootR, windowMotor;
-        //public static Encoder climbEncoder, frameEncoder;
-        //public static Servo barrierL, barrierR;
 
         
         public static final int PISTON_CHANNEL_FORWARD = 2856, PISTON_CHANNEL_REVERSE = 2758;
@@ -126,12 +96,7 @@ public class RobotMap {
         public static void init() {
                 // initializing motors
                liftMotor = new Victor(LIFT_CHANNEL);
-                /*spinTakeMotorL = new Victor(SPINTAKE_CHANNEL_L);
-                spinTakeMotorR = new Victor(SPINTAKE_CHANNEL_R);
-                spinTakeMotorR.setInverted(true);
-                lMotor = new Victor(LEFT_MOTOR_CHANNEL);
-                rMotor = new Victor(RIGHT_MOTOR_CHANNEL);
-                rMotor.setInverted(true);*/
+                
 
                 //map each button to a JoystickButton
                 aButton = new JoystickButton(XController, 1);
@@ -144,28 +109,5 @@ public class RobotMap {
                 startButton = new JoystickButton(XController, 8);
                 leftStickButton = new JoystickButton(XController, 9);
                 rightStickButton = new JoystickButton(XController, 10);
-
-                
-                // lift encoder and motor setup
-                // liftEncoder = new Encoder(LIFT_ENC_CHANNEL_A, LIFT_ENC_CHANNEL_B);
-                // liftEncoder.setDistancePerPulse(distancePerPulse);
-                // liftEncoder.reset();
-                // liftEncoder.setReverseDirection(true);
-                //lift = new Spark(LIFT_CHANNEL);
-                //lift.setInverted(true);
-                
-                //New stuff
-                /*climbL = new Victor(CLIMB_MOTOR_CHANNEL_1);
-                climbR = new Victor(CLIMB_MOTOR_CHANNEL_2);
-                shootL = new Victor(SHOOTER_MOTOR_CHANNEL_1);
-                shootR = new Victor(SHOOTER_MOTOR_CHANNEL_2);
-                windowMotor = new Victor(WINDOW_MOTOR_CHANNEL);
-                climbEncoder = new Encoder(CLIMB_ENCODER_CHANNEL_A, CLIMB_ENCODER_CHANNEL_B);
-                climbEncoder.setDistancePerPulse(0);
-                frameEncoder = new Encoder(FRAME_ENCODER_CHANNEL_A, FRAME_ENCODER_CHANNEL_B);
-
-                barrierL = new Servo(GATE_SERVO_CHANNEL_1);
-                barrierR = new Servo(GATE_SERVO_CHANNEL_2);
-                */
         }
 }
