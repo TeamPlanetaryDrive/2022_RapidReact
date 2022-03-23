@@ -45,9 +45,11 @@ public class OI {
     RobotMap.aButton.whenPressed(new turnToGoal());    
     RobotMap.bButton.whenPressed(new testCommand());
     RobotMap.xButton.whenPressed(new turnToBall());
-    RobotMap.yButton.whenPressed(new climb());
+    //RobotMap.yButton.whenPressed(new climb());
     RobotMap.leftBumper.whenHeld(new intakeCBT());
     RobotMap.rightBumper.whenHeld(new intakeDTF());
+    RobotMap.startButton.whenPressed(new setLift(true));
+    RobotMap.backButton.whenPressed(new setLift(false));
     
     RobotMap.leftStickButton.whenHeld(new movement(LEFT_STICK_PRESS));
     RobotMap.rightStickButton.whenHeld(new movement(RIGHT_STICK_PRESS));
