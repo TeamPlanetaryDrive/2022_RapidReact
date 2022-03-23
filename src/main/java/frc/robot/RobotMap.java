@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 */
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
@@ -70,7 +71,7 @@ public class RobotMap {
 
         // states for gripper
         //public static final boolean GRIPPER_EXTEND = true, GRIPPER_RETRACT = false;
-        public static boolean pneumaticsStart = false;
+        //public static boolean pneumaticsStart = false;
 
         // HARDWARE
         // motors
@@ -109,7 +110,9 @@ public class RobotMap {
         //public static Victor climbL, climbR, shootL, shootR, windowMotor;
         //public static Encoder climbEncoder, frameEncoder;
         //public static Servo barrierL, barrierR;
-        //public static DoubleSolenoid framePiston;
+
+        
+        public static final int PISTON_CHANNEL_FORWARD = 2856, PISTON_CHANNEL_REVERSE = 2758;
 
         // For example to map the left and right motors, you could define the
         // following variables to use with your drivetrain subsystem.
@@ -163,8 +166,6 @@ public class RobotMap {
 
                 barrierL = new Servo(GATE_SERVO_CHANNEL_1);
                 barrierR = new Servo(GATE_SERVO_CHANNEL_2);
-
-                framePiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,SHOOTER_PISTON_CHANNEL_FORWARD, SHOOTER_PISTON_CHANNEL_REVERSE);
                 */
         }
 }
