@@ -60,10 +60,17 @@ public class RobotMap {
         //outlining spintake motors, placeholder channels
         public static int SPINTAKE_CHANNEL_L = 0;
         public static int SPINTAKE_CHANNEL_R = 1;
+
+        public static int LEFT_SHOOTER_CHANNEL = 4;
+
+        public static int RIGHT_SHOOTER_CHANNEL = 5;
+
+        public static int SHOOTER_AIM_CHANNEL = 6;
         
                         // enconder channels
         // not final yet
         public static int LIFT_ENC_CHANNEL_A = 0, LIFT_ENC_CHANNEL_B = 1;
+        public static int SHOOTER_ENCODER_CHANNEL_A = 0, SHOOTER_ENCODER_CHANNEL_B = 1;
         // LEFT_ENC_CHANNEL_A = 0,
         // LEFT_ENC_CHANNEL_B = 1,
         // RIGHT_ENC_CHANNEL_A = 2,
@@ -74,11 +81,7 @@ public class RobotMap {
         //public static boolean pneumaticsStart = false;
 
         // HARDWARE
-        // motors
-        public static Victor liftMotor;//, spinTakeMotorL, spinTakeMotorR, lMotor, rMotor;
         
-        //public static Victor lMotor = new Victor(LEFT_MOTOR_CHANNEL);
-        //public static Victor rMotor = new Victor(RIGHT_MOTOR_CHANNEL);
         public static MotorController lift;
 
         // state for lift motor
@@ -125,7 +128,6 @@ public class RobotMap {
         // public static int rangefinderModule = 1;
         public static void init() {
                 // initializing motors
-               liftMotor = new Victor(LIFT_CHANNEL);
                 /*spinTakeMotorL = new Victor(SPINTAKE_CHANNEL_L);
                 spinTakeMotorR = new Victor(SPINTAKE_CHANNEL_R);
                 spinTakeMotorR.setInverted(true);

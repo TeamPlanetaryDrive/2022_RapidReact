@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
     Drive = new DriveTrain();
     Cameras = new Vision();
     Spintake = new Intake();
-    Gun = new Shooter();
+    //Gun = new Shooter();
     Climb = new Lift();
     
     m_oi = new OI();
