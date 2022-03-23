@@ -70,9 +70,9 @@ public class DriveTrain extends SubsystemBase {
           break;
         case BBALL:
           double c = 1;
-          double k = 1;
+          //double k = 1;
           double fixit = 0;
-          double y = mag * Math.sin(theta);
+          //double y = mag * Math.sin(theta);
           // System.out.println("(" + xaxis + ", " + yaxis + ")");
           //double ye = 2/(1 + Math.exp(-k*y)) - 1;
           left = -thrust * fixit * yaxis * Math.sqrt(Math.pow(mag,2) + Math.pow(c,2) + 2*mag*c*Math.cos(theta));

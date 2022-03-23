@@ -23,25 +23,6 @@ public class OI {
     private static final int LEFT_STICK_PRESS = 0, RIGHT_STICK_PRESS = 1;    
 
   public OI() {
-    
-    /*
-    teleop lift controls
-    //RobotMap.button8_left.whileHeld(new ManualLift());
-    RobotMap.button3_right.whenPressed(new auto2());
-    RobotMap.button2_right.whenPressed(new findGoal());
-    RobotMap.button2_right.whenPressed(new prepareForIntake());
-    intake (spinning wheels inwards)
-    RobotMap.button1_right.whileHeld(new spinShooterWheels(0.4));
-    shoot (spinning wheels outwards)
-    RobotMap.button1_right.whileHeld(new spinShooterWheels(-0.4));
-    RobotMap.button4_right.whenPressed(new turnToGoal());
-    RobotMap.button5_right.whenPressed(new moveToGoal());
-    RobotMap.button4_left.whenPressed(new prepShootLow());
-    RobotMap.button5_left.whenPressed(new prepShootHigh());
-    RobotMap.button8_right.whenPressed(new releaseBallLeft());
-    RobotMap.button9_right.whenPressed(new releaseBallRight());
-    friccaroo
-    */
     RobotMap.aButton.whenPressed(new turnToGoal());    
     RobotMap.bButton.whenPressed(new testCommand());
     RobotMap.xButton.whenPressed(new turnToBall());
