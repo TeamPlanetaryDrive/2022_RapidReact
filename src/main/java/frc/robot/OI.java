@@ -6,10 +6,10 @@
 /*----------------------------------------------------------------------------*/
 package frc.robot;
 
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.*;
 import frc.robot.commands.Intake.intakeCBT;
 import frc.robot.commands.Intake.intakeDTF;
-import frc.robot.commands.Intake.intakeFull;
 import frc.robot.commands.vision.*;
 import frc.robot.commands.shooting.*;
 
@@ -46,8 +46,8 @@ public class OI {
     RobotMap.bButton.whenPressed(new testCommand());
     RobotMap.xButton.whenPressed(new turnToBall());
     RobotMap.yButton.whenPressed(new climb());
-    RobotMap.leftBumper.whenHeld(new intakeCBT());
-    RobotMap.rightBumper.whenHeld(new intakeDTF());
+    RobotMap.leftBumper.whenPressed(new intakeDTF(10));
+    RobotMap.rightBumper.whenPressed(new SequentialCommandGroup(new intakeCBT(5), new intakeDTF(20)));
     
     RobotMap.leftStickButton.whenHeld(new movement(LEFT_STICK_PRESS));
     RobotMap.rightStickButton.whenHeld(new movement(RIGHT_STICK_PRESS));

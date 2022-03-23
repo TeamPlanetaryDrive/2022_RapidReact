@@ -6,9 +6,11 @@ import frc.robot.Robot;
 public class intakeDTF extends CommandBase {
     
     private int frameCount;
+    private double duration;
 
-    public intakeDTF() {
+    public intakeDTF(double duration) {
         addRequirements(Robot.Spintake);
+        this.duration = duration;
     }
 
     public void initialize() {
@@ -16,13 +18,13 @@ public class intakeDTF extends CommandBase {
     }
 
     public void execute() { 
-        Robot.Spintake.spin(1,1);
+        Robot.Spintake.spin(1.4,1.4);
         frameCount++;
 
     }
 
     public boolean isFinished() {
-        return super.isFinished() || frameCount > 8;
+        return super.isFinished() || frameCount > duration;
     }
 
     public void end(boolean interrupted) {

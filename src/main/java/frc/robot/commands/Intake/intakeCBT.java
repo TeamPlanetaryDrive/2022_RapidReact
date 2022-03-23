@@ -6,9 +6,11 @@ import frc.robot.Robot;
 public class intakeCBT extends CommandBase{
 
     private int frameCount;
+    private double duration;
 
-    public intakeCBT() {
+    public intakeCBT(double duration) {
         addRequirements(Robot.Spintake);
+        this.duration = duration;
     }
 
     public void initialize() {
@@ -22,7 +24,7 @@ public class intakeCBT extends CommandBase{
     }
 
     public boolean isFinished() {
-        return super.isFinished() || frameCount > 4;
+        return super.isFinished() || frameCount > duration;
     }
 
     public void end(boolean interrupted) {
