@@ -65,7 +65,6 @@ public class DriveTrain extends SubsystemBase {
         case WILLIAM: 
           left = thrust*((xaxis-yaxis)*r2o2+0.66*(dxaxis-dyaxis)*r2o2);
           right = thrust*((-xaxis-yaxis)*r2o2+0.66*(-dxaxis-dyaxis)*r2o2);
-          System.out.println(left + ", " + right);
           //System.out.println("SCHPEED: " + Math.sqrt(Math.pow(lMotor.get(), 2) + Math.pow(rMotor.get(), 2)));
           break;
         case BBALL:

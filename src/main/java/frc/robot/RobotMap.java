@@ -85,7 +85,7 @@ public class RobotMap {
 
 
         
-        public static final int PISTON_CHANNEL_FORWARD = 2856, PISTON_CHANNEL_REVERSE = 2758;
+        public static final int PISTON_CHANNEL_FORWARD = 0, PISTON_CHANNEL_REVERSE = 1;
 
         // For example to map the left and right motors, you could define the
         // following variables to use with your drivetrain subsystem.

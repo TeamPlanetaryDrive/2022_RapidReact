@@ -20,7 +20,8 @@ public class setLift extends CommandBase{
         }
     }
 
-    public void execute() { 
+    public void execute() {
+         
     }
 
     public boolean isFinished() {

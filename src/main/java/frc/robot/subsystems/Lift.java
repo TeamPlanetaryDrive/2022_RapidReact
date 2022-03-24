@@ -10,14 +10,16 @@ public class Lift extends SubsystemBase{
 
     public Lift(){
         liftPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,RobotMap.PISTON_CHANNEL_FORWARD,RobotMap.PISTON_CHANNEL_REVERSE);
-        retract();
+        //retract();
     }
 
     public void extend(){
         liftPiston.set(DoubleSolenoid.Value.kForward);
+        System.out.println(liftPiston.isFwdSolenoidDisabled() + "fwd");
     }
     public void retract(){
         liftPiston.set(DoubleSolenoid.Value.kReverse);
+        System.out.println(liftPiston.isRevSolenoidDisabled() + "rev");
     }
     public void off(){
         liftPiston.set(DoubleSolenoid.Value.kOff);
