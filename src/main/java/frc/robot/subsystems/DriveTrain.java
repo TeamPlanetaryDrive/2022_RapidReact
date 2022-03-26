@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Encoder;
 //import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
@@ -35,6 +36,7 @@ public class DriveTrain extends SubsystemBase {
   public static final int ARCADE=-1,WILLIAM=0,BBALL=1,BURGERKING=2,JAEGER=3;
   private double stationaryTolerance = 0.05;
   Victor lMotor, rMotor;
+  public Encoder encoderL, encoderR;
 
   public DriveTrain() {
     // calls the subsystem to let it know that it needs to be called as a subsystem
@@ -44,6 +46,10 @@ public class DriveTrain extends SubsystemBase {
     rMotor.setInverted(true);
     robotDrive = new DifferentialDrive(lMotor, rMotor);
     robotDrive.setSafetyEnabled(false);
+    encoderL = new Encoder(RobotMap.DRIVETRAIN_ENCODER_CHANNEL_L_A, RobotMap.DRIVETRAIN_ENCODER_CHANNEL_L_B);
+    encoderR = new Encoder(RobotMap.DRIVETRAIN_ENCODER_CHANNEL_R_A, RobotMap.DRIVETRAIN_ENCODER_CHANNEL_R_B, true);
+    encoderL.setDistancePerPulse(1./256.); //need to do tests to see how far it moves in 256 pulses, depends on speed tho
+    encoderR.setDistancePerPulse(1./256.);
     // setDefaultCommand(new robotMovement());
   }
 

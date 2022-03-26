@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class auto1 extends CommandBase {
     
     public auto1() {
-
+        
     }
 
     public void initialize() {

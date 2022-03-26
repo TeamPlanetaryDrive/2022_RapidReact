@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opencv.core.*;
+import org.opencv.features2d.SimpleBlobDetector;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -30,7 +31,7 @@ import edu.wpi.first.wpilibj.util.Color;
 public class Vision extends SubsystemBase {
 
 	CvSink cvSink;
-	NetworkTableEntry totalEntry, contourInfo, goalBlurEntry;
+	NetworkTableEntry ballEntry, contourInfo, goalBlurEntry;
 	final int FRAME_AVG = 12;
 	double slopeavg = 0;
 
@@ -41,15 +42,13 @@ public class Vision extends SubsystemBase {
 		// get entries from NetworkTable
 		NetworkTableInstance inst = NetworkTableInstance.getDefault();
       	NetworkTable table = inst.getTable("datatable");
-      	totalEntry = table.getEntry("Top Left Pixel");
+      	ballEntry = table.getEntry("balls");
 		contourInfo = table.getEntry("Contour Positions rawr xd nya~");
 		goalBlurEntry = table.getEntry("blrur");
 
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
-		Mat contProc = new Mat();
-		Mat contOut = new Mat();
-		Mat ballProc = new Mat();
+		Mat contProc = new Mat(), contOut = new Mat(), ballProc = new Mat(), ballProc2 = new Mat();
 
 		// create vision thread and camera feed
 		new Thread(() -> {
@@ -65,7 +64,7 @@ public class Vision extends SubsystemBase {
 				continue;
 			  }
 			  
-			  balling.putFrame(redBall(ballProc));
+			  balling.putFrame(ballBall(ballProc,ballProc2,true));
 			  contouring.putFrame(detectGoal(contProc,contOut));
 
 			  contProc.release();
@@ -88,18 +87,30 @@ public class Vision extends SubsystemBase {
 		Size s = new Size(size, size);
 		return new Mat(s,CvType.CV_8UC1,k);
 	}
-	public Mat redBall(Mat out) {
-		Scalar lb = new Scalar(32.0,28.0,96.0);
-		Scalar ub = new Scalar(50.0,50.0,155.0);
-		Mat kerny = makeKernel(3);
-		//Imgproc.cvtColor(out, out, Imgproc.COLOR_BGR2HSV);
-		Core.inRange(out, lb, ub, out);
-		Imgproc.erode(out,out,kerny);
-		Imgproc.dilate(out,out,makeKernel(6));
-		Imgproc.erode(out,out,kerny);
-		totalEntry.setDoubleArray(out.get(0,0));
+	public Mat ballBall(Mat out, Mat out2, boolean red) {
+		Scalar lb1,ub1,lb2,ub2;
+		lb1 = new Scalar(120,55,50);
+		ub1 = new Scalar(180,200,255);
+		lb2 = null;
+		ub2 = null;
+		if(red){
+			lb1 = new Scalar(140,55,50);
+			ub1 = new Scalar(180,200,255);
+			lb2 = new Scalar(0,55,50);
+			ub2 = new Scalar(40,200,255);
+		}
+		Imgproc.cvtColor(out, out, Imgproc.COLOR_BGR2HLS);
+		Core.inRange(out, lb1, ub1, out2);
+		if(red){
+			Core.inRange(out, lb2, ub2, out);
+			Core.bitwise_or(out,out2,out2);
+		}
+		Imgproc.erode(out,out,makeKernel(3));
+		Imgproc.dilate(out,out,makeKernel(9));
+		Imgproc.erode(out,out,makeKernel(6));
+		Imgproc.findContours(out,contours,hierarchy,Imgproc.RETR_EXTERNAL,Imgproc.CHAIN_APPROX_SIMPLE);
+		//filter out contours and publish position
 		return out;
-
 	}
 
 	public Mat detectGoal(Mat out, Mat contout) {
