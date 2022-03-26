@@ -60,9 +60,9 @@ public class RobotMap {
         public static int SPINTAKE_CHANNEL_L = 0;
         public static int SPINTAKE_CHANNEL_R = 1;
 
-        public static int LEFT_SHOOTER_CHANNEL = 4;
+        //public static int LEFT_SHOOTER_CHANNEL = 4;
 
-        public static int RIGHT_SHOOTER_CHANNEL = 5;
+        //public static int RIGHT_SHOOTER_CHANNEL = 5;
 
         public static int SHOOTER_AIM_CHANNEL = 6;
         

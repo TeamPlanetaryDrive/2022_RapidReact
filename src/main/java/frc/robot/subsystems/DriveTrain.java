@@ -121,7 +121,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void periodic(){
-    int mode = WILLIAM;
+    int mode = ARCADE;
     if(mode == ARCADE){
       robotDrive.arcadeDrive(-RobotMap.XController.getLeftY(),RobotMap.XController.getLeftX());
       //m_drive.curvatureDrive(-RobotMap.XController.getLeftY(),RobotMap.XController.getLeftX(), RobotMap.XController.getLeftStickButtonPressed());
