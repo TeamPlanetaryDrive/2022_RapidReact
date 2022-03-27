@@ -26,9 +26,13 @@ public class turnToGoal extends CommandBase {
     public void initialize() {
         System.out.println("hoobop");
         finish = false;
+        Robot.Cameras.doGoal = true;
     }
 
     public void execute() {
+        if(Robot.Cameras.countGoal < 10) {
+            return;
+        }
         contourPositions = contourInfo.getDoubleArray(defArray);
         goalSize = contourPositions[0];
         goalX = contourPositions[2];
@@ -69,6 +73,7 @@ public class turnToGoal extends CommandBase {
 
     public void end(boolean interrupted) {
         Robot.Drive.drive(0, 0);
+        Robot.Cameras.doGoal = false;
     }
 
 }

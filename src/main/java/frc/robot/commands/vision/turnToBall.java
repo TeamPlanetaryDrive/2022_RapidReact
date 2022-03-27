@@ -18,10 +18,13 @@ public class turnToBall extends CommandBase {
     public void initialize() {
         finish = false;
         System.out.println("mmm balls");
+        Robot.Cameras.doBall = true;
     }
 
     public void execute() {
-
+        if(Robot.Cameras.countBall < 10) {
+            return;
+        }
     }
 
     public boolean isFinished() {
@@ -29,7 +32,7 @@ public class turnToBall extends CommandBase {
     }
 
     public void end(boolean interrupted) {
-
+        Robot.Cameras.doBall = false;
     }
 
 }

@@ -50,14 +50,13 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     RobotMap.init();
     
-    Drive = new DriveTrain();
+    //Drive = new DriveTrain();
     Cameras = new Vision();
     Spintake = new Intake();
     Gun = new Shooter();
     Climb = new Lift();
     
     m_oi = new OI();
-    Cameras.init();
     m_chooser = new SendableChooser<Command>();
     m_chooser.setDefaultOption("auto1", new auto1());
     //m_chooser.addOption("breakStartLine", new breakStartLine());

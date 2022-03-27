@@ -46,10 +46,10 @@ public class DriveTrain extends SubsystemBase {
     rMotor.setInverted(true);
     robotDrive = new DifferentialDrive(lMotor, rMotor);
     robotDrive.setSafetyEnabled(false);
-    encoderL = new Encoder(RobotMap.DRIVETRAIN_ENCODER_CHANNEL_L_A, RobotMap.DRIVETRAIN_ENCODER_CHANNEL_L_B);
-    encoderR = new Encoder(RobotMap.DRIVETRAIN_ENCODER_CHANNEL_R_A, RobotMap.DRIVETRAIN_ENCODER_CHANNEL_R_B, true);
-    encoderL.setDistancePerPulse(1./256.); //need to do tests to see how far it moves in 256 pulses, depends on speed tho
-    encoderR.setDistancePerPulse(1./256.);
+    //encoderL = new Encoder(RobotMap.DRIVETRAIN_ENCODER_CHANNEL_L_A, RobotMap.DRIVETRAIN_ENCODER_CHANNEL_L_B);
+    //encoderR = new Encoder(RobotMap.DRIVETRAIN_ENCODER_CHANNEL_R_A, RobotMap.DRIVETRAIN_ENCODER_CHANNEL_R_B, true);
+    //encoderL.setDistancePerPulse(1./256.); //need to do tests to see how far it moves in 256 pulses, depends on speed tho
+    //encoderR.setDistancePerPulse(1./256.);
     // setDefaultCommand(new robotMovement());
   }
 

@@ -11,6 +11,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.cameraserver.*;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotMap;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
 
@@ -34,11 +35,22 @@ public class Vision extends SubsystemBase {
 	NetworkTableEntry ballEntry, contourInfo, goalBlurEntry;
 	final int FRAME_AVG = 12;
 	double slopeavg = 0;
-
+	
 	ArrayList<MatOfPoint> contours;
 	Mat hierarchy;
 
-	public void init(){
+	public boolean doBall = false, doGoal = false; //among us dababy 
+	public int countBall = 0, countGoal = 0;
+
+	//scalar constants
+	private final int BLUEB=0,REDB1=1,REDB2=2,GREENG=3,LOWER=0,UPPER=1;
+	Scalar[][] bounds = {{new Scalar(85,25,80), new Scalar(135,230,255)}, // blue ball
+						{new Scalar(140,25,80), new Scalar(180,230,255)}, // red ball 1
+						{new Scalar(0,25,80), new Scalar(40,230,255)}, // red ball 2
+						{new Scalar(61.0,100.0,96.0), new Scalar(103.0,225.0,255.0)}}; // goal contour
+	Mat[] kernels = {makeKernel(3),makeKernel(6),makeKernel(9)};
+
+	public Vision(){
 		// get entries from NetworkTable
 		NetworkTableInstance inst = NetworkTableInstance.getDefault();
       	NetworkTable table = inst.getTable("datatable");
@@ -53,23 +65,33 @@ public class Vision extends SubsystemBase {
 		// create vision thread and camera feed
 		new Thread(() -> {
 			UsbCamera camera = CameraServer.startAutomaticCapture();
-			camera.setResolution(640, 480);
-	  
+			camera.setResolution(RobotMap.CAM_WID, RobotMap.CAM_HEI);
+
 			cvSink = CameraServer.getVideo();
-			CvSource balling = CameraServer.putVideo("We Balling", 640, 480);
-			CvSource contouring = CameraServer.putVideo("We Contouring", 640, 480);
+			CvSource balling = CameraServer.putVideo("We Balling", RobotMap.CAM_WID, RobotMap.CAM_HEI);
+			CvSource contouring = CameraServer.putVideo("We Contouring", RobotMap.CAM_WID, RobotMap.CAM_HEI);
 
 			while(!Thread.interrupted()) {
 			  if (cvSink.grabFrame(contProc) == 0 || cvSink.grabFrame(ballProc) == 0) {
 				continue;
 			  }
 			  
-			  balling.putFrame(ballBall(ballProc,ballProc2,false));
-			  contouring.putFrame(detectGoal(contProc,contOut));
-
-			  contProc.release();
-			  contOut.release();
-			  ballProc.release();
+			  if(doBall){
+					balling.putFrame(ballBall(ballProc,ballProc2,false));
+					countBall++;
+					ballProc.release();
+					ballProc2.release();
+			  } else {
+				  countBall = 0;
+			  }
+			  if(doGoal){
+					contouring.putFrame(detectGoal(contProc,contOut));
+					countGoal++;
+					contProc.release();
+			  		contOut.release();
+			  } else {
+				  countGoal = 0;
+			  }
 			}
 		  }).start();
   	}
@@ -88,29 +110,19 @@ public class Vision extends SubsystemBase {
 		return new Mat(s,CvType.CV_8UC1,k);
 	}
 	public Mat ballBall(Mat out, Mat out2, boolean red) {
-		// threshold to just color of ball
-		Scalar lb1,ub1,lb2,ub2;
-		lb1 = new Scalar(85,25,80);
-		ub1 = new Scalar(135,230,255);
-		lb2 = null;
-		ub2 = null;
-		if(red){
-			lb1 = new Scalar(140,25,80);
-			ub1 = new Scalar(180,230,255);
-			lb2 = new Scalar(0,25,80);
-			ub2 = new Scalar(40,230,255);
-		}
 		Imgproc.cvtColor(out, out, Imgproc.COLOR_BGR2HLS);
-		Core.inRange(out, lb1, ub1, out2);
 		if(red){
-			Core.inRange(out, lb2, ub2, out);
+			Core.inRange(out,bounds[REDB1][LOWER], bounds[REDB1][UPPER], out2);
+			Core.inRange(out,bounds[REDB2][LOWER], bounds[REDB2][UPPER], out);
 			Core.bitwise_or(out,out2,out2);
+		}else{
+			Core.inRange(out, bounds[BLUEB][LOWER], bounds[BLUEB][UPPER], out2);
 		}
 
 		//morphological operators
-		Imgproc.erode(out2,out2,makeKernel(3));
-		Imgproc.dilate(out2,out2,makeKernel(9));
-		Imgproc.erode(out2,out2,makeKernel(6));
+		Imgproc.erode(out2,out2,kernels[0]);
+		Imgproc.dilate(out2,out2,kernels[2]);
+		Imgproc.erode(out2,out2,kernels[1]);
 
 		contours = new ArrayList<>();
 		hierarchy = new Mat();
@@ -121,8 +133,9 @@ public class Vision extends SubsystemBase {
 		// filter for circular contours
 		double goodratio = -1;
 		int goodindex = -1;
+		MatOfPoint cur;
 		for(int p = contours.size()-1; p >= 0; p--) {
-			MatOfPoint cur = contours.get(p);
+			cur = contours.get(p);
 			/*MatOfInt hull;
 			Imgproc.convexHull(curr,hull);
 			MatOfPoint cur = */
@@ -131,8 +144,6 @@ public class Vision extends SubsystemBase {
 			double ratio = area / circum; // L + ratio + you fell off + cope + seethe + no maidens + ugly 
 			//double circle = circum / (4*Math.PI); //goated
 			double square = circum / 16; //squark
-			if(area>5000)
-				System.out.println(square+"  : "+ratio+"  "+area);
 			if(ratio > square * .8 && area > 5000 && ratio > goodratio){
 				goodratio = ratio;
 				goodindex = p;
@@ -147,13 +158,12 @@ public class Vision extends SubsystemBase {
 			out = new Mat(out.rows(),out.cols(),CvType.CV_8U,Scalar.all(120));
 		}else{
 			System.out.println(goodindex);
-			MatOfPoint best = contours.get(goodindex);
-			Moments m = Imgproc.moments(best, true);
+			cur = contours.get(goodindex);
+			Moments m = Imgproc.moments(cur, true);
 			double[] position = {(m.get_m10() /  m.get_m00()), (m.get_m01() / m.get_m00())};
 			ballEntry.setDoubleArray(position);
 			Imgproc.drawContours(out, contours, goodindex, red?new Scalar(0,0,255):new Scalar(255,0,0), 5);
 		}
-		out2.release();
 		return out;
 	}
 
@@ -163,11 +173,11 @@ public class Vision extends SubsystemBase {
 		contout = Mat.zeros(out.size(),CvType.CV_8UC1);
 		Imgproc.cvtColor(contout,contout,Imgproc.COLOR_GRAY2BGR);
 		// mask out goal
-		Scalar lb = new Scalar(61.0,100.0,96.0);
-		Scalar ub = new Scalar(103.0,225.0,255.0);
+		Scalar lb = bounds[GREENG][LOWER];
+		Scalar ub = bounds[GREENG][UPPER];
 		Imgproc.cvtColor(out, out, Imgproc.COLOR_BGR2HLS);
 		Core.inRange(out, lb, ub, out);
-		Imgproc.dilate(out,out,makeKernel(3));
+		Imgproc.dilate(out,out,kernels[0]);
 
 		// find contours
 		contours = new ArrayList<>();

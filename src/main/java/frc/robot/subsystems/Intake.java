@@ -15,7 +15,7 @@ public class Intake extends SubsystemBase {
     
     public void periodic() {
         double[] speeds = getSpeed();
-        spin(speeds[0]/1.7,speeds[1]/1.7);
+        spin(speeds[0],speeds[1]);
     }
 
     public static double[] getSpeed() {

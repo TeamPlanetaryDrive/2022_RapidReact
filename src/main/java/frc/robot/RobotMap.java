@@ -37,7 +37,7 @@ public class RobotMap {
                         CAMERA_TWO_POWER = 1, VRM_POWER = 38578942;
 
         // Camera Resolution Dimensions
-        public static final int CAMERA_RESOLUTION_WIDTH = 320, CAMERA_RESOLUTION_HEIGHT = 240;
+        public static final int CAM_WID = 640, CAM_HEI = 480;
 
         // piston based
         public static int GRIPPER_CHANNEL_A = 0, GRIPPER_CHANNEL_B = 2;
