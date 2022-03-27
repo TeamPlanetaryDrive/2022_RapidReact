@@ -64,7 +64,7 @@ public class Vision extends SubsystemBase {
 				continue;
 			  }
 			  
-			  balling.putFrame(ballBall(ballProc,ballProc2,true));
+			  balling.putFrame(ballBall(ballProc,ballProc2,false));
 			  contouring.putFrame(detectGoal(contProc,contOut));
 
 			  contProc.release();
@@ -88,16 +88,17 @@ public class Vision extends SubsystemBase {
 		return new Mat(s,CvType.CV_8UC1,k);
 	}
 	public Mat ballBall(Mat out, Mat out2, boolean red) {
+		// threshold to just color of ball
 		Scalar lb1,ub1,lb2,ub2;
-		lb1 = new Scalar(120,55,50);
-		ub1 = new Scalar(180,200,255);
+		lb1 = new Scalar(85,25,80);
+		ub1 = new Scalar(135,230,255);
 		lb2 = null;
 		ub2 = null;
 		if(red){
-			lb1 = new Scalar(140,55,50);
-			ub1 = new Scalar(180,200,255);
-			lb2 = new Scalar(0,55,50);
-			ub2 = new Scalar(40,200,255);
+			lb1 = new Scalar(140,25,80);
+			ub1 = new Scalar(180,230,255);
+			lb2 = new Scalar(0,25,80);
+			ub2 = new Scalar(40,230,255);
 		}
 		Imgproc.cvtColor(out, out, Imgproc.COLOR_BGR2HLS);
 		Core.inRange(out, lb1, ub1, out2);
@@ -105,11 +106,54 @@ public class Vision extends SubsystemBase {
 			Core.inRange(out, lb2, ub2, out);
 			Core.bitwise_or(out,out2,out2);
 		}
-		Imgproc.erode(out,out,makeKernel(3));
-		Imgproc.dilate(out,out,makeKernel(9));
-		Imgproc.erode(out,out,makeKernel(6));
-		Imgproc.findContours(out,contours,hierarchy,Imgproc.RETR_EXTERNAL,Imgproc.CHAIN_APPROX_SIMPLE);
-		//filter out contours and publish position
+
+		//morphological operators
+		Imgproc.erode(out2,out2,makeKernel(3));
+		Imgproc.dilate(out2,out2,makeKernel(9));
+		Imgproc.erode(out2,out2,makeKernel(6));
+
+		contours = new ArrayList<>();
+		hierarchy = new Mat();
+		
+		// contours
+		Imgproc.findContours(out2,contours,hierarchy,Imgproc.RETR_EXTERNAL,Imgproc.CHAIN_APPROX_SIMPLE);
+
+		// filter for circular contours
+		double goodratio = -1;
+		int goodindex = -1;
+		for(int p = contours.size()-1; p >= 0; p--) {
+			MatOfPoint cur = contours.get(p);
+			/*MatOfInt hull;
+			Imgproc.convexHull(curr,hull);
+			MatOfPoint cur = */
+			double area = Imgproc.contourArea(cur);
+			double circum = Imgproc.arcLength(new MatOfPoint2f(cur.toArray()), true);
+			double ratio = area / circum; // L + ratio + you fell off + cope + seethe + no maidens + ugly 
+			//double circle = circum / (4*Math.PI); //goated
+			double square = circum / 16; //squark
+			if(area>5000)
+				System.out.println(square+"  : "+ratio+"  "+area);
+			if(ratio > square * .8 && area > 5000 && ratio > goodratio){
+				goodratio = ratio;
+				goodindex = p;
+			}
+		}
+
+		//publish info
+		//Imgproc.cvtColor(out, out, Imgproc.COLOR_HLS2BGR);
+		out = new Mat(out.rows(),out.cols(),CvType.CV_8UC3,Scalar.all(0));
+		if(goodindex < 0) {
+			ballEntry.setDoubleArray(new double[] {-1,-1});
+			out = new Mat(out.rows(),out.cols(),CvType.CV_8U,Scalar.all(120));
+		}else{
+			System.out.println(goodindex);
+			MatOfPoint best = contours.get(goodindex);
+			Moments m = Imgproc.moments(best, true);
+			double[] position = {(m.get_m10() /  m.get_m00()), (m.get_m01() / m.get_m00())};
+			ballEntry.setDoubleArray(position);
+			Imgproc.drawContours(out, contours, goodindex, red?new Scalar(0,0,255):new Scalar(255,0,0), 5);
+		}
+		out2.release();
 		return out;
 	}
 

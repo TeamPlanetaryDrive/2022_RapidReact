@@ -11,7 +11,6 @@ import frc.robot.commands.*;
 import frc.robot.commands.Intake.intakeCBT;
 import frc.robot.commands.Intake.intakeDTF;
 import frc.robot.commands.vision.*;
-import frc.robot.commands.shooting.*;
 
 
 /**
@@ -34,7 +33,7 @@ public class OI {
     
     RobotMap.leftStickButton.whenHeld(new movement(LEFT_STICK_PRESS));
     RobotMap.rightStickButton.whenHeld(new movement(RIGHT_STICK_PRESS));
-
+    
     /*
     Goals for Xbox Controller Button Pressing Mapping
     -------------------------------------------------
