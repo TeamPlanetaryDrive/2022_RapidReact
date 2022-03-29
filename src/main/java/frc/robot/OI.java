@@ -22,7 +22,7 @@ public class OI {
     private static final int LEFT_STICK_PRESS = 0, RIGHT_STICK_PRESS = 1;    
 
   public OI() {
-    //RobotMap.aButton.whenPressed(new turnToGoal());    
+    RobotMap.aButton.whenPressed(new turnToGoal());    
     RobotMap.bButton.whenPressed(new testCommand());
     //RobotMap.xButton.whenPressed(new turnToBall());
     //RobotMap.yButton.whenPressed(new climb());
@@ -31,8 +31,8 @@ public class OI {
     RobotMap.leftBumper.whenPressed(new intakeDTF(10));
     RobotMap.rightBumper.whenPressed(new SequentialCommandGroup(new intakeCBT(5), new intakeDTF(20)));
     
-    //RobotMap.leftStickButton.whenHeld(new movement(LEFT_STICK_PRESS));
-    //RobotMap.rightStickButton.whenHeld(new movement(RIGHT_STICK_PRESS));
+    RobotMap.leftStickButton.whenHeld(new movement(LEFT_STICK_PRESS));
+    RobotMap.rightStickButton.whenHeld(new movement(RIGHT_STICK_PRESS));
     
     /*
     Goals for Xbox Controller Button Pressing Mapping

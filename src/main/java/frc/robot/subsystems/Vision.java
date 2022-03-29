@@ -48,7 +48,6 @@ public class Vision extends SubsystemBase {
 						{new Scalar(140,25,80), new Scalar(180,230,255)}, // red ball 1
 						{new Scalar(0,25,80), new Scalar(40,230,255)}, // red ball 2
 						{new Scalar(61.0,100.0,96.0), new Scalar(103.0,225.0,255.0)}}; // goal contour
-	Mat[] kernels = {makeKernel(3),makeKernel(6),makeKernel(9)};
 
 	public Vision(){
 		// get entries from NetworkTable
@@ -104,7 +103,7 @@ public class Vision extends SubsystemBase {
 		}
 	}
 
-	public Mat makeKernel(int size) {
+	public static Mat makeKernel(int size) {
 		Scalar k = new Scalar(255.0,255.0,255.0);
 		Size s = new Size(size, size);
 		return new Mat(s,CvType.CV_8UC1,k);
@@ -120,9 +119,9 @@ public class Vision extends SubsystemBase {
 		}
 
 		//morphological operators
-		Imgproc.erode(out2,out2,kernels[0]);
-		Imgproc.dilate(out2,out2,kernels[2]);
-		Imgproc.erode(out2,out2,kernels[1]);
+		Imgproc.erode(out2,out2,makeKernel(3));
+		Imgproc.dilate(out2,out2,makeKernel(9));
+		Imgproc.erode(out2,out2,makeKernel(6));
 
 		contours = new ArrayList<>();
 		hierarchy = new Mat();
@@ -177,7 +176,7 @@ public class Vision extends SubsystemBase {
 		Scalar ub = bounds[GREENG][UPPER];
 		Imgproc.cvtColor(out, out, Imgproc.COLOR_BGR2HLS);
 		Core.inRange(out, lb, ub, out);
-		Imgproc.dilate(out,out,kernels[0]);
+		Imgproc.dilate(out,out,makeKernel(3));
 
 		// find contours
 		contours = new ArrayList<>();
@@ -212,7 +211,7 @@ public class Vision extends SubsystemBase {
 				Imgproc.circle(contout,centerPositions.get(i),3,new Scalar(0,0,255));
 			}
 		}
-		//System.out.println(" --" );
+		// i am living in your walls
 		
 		// create list of chains
 		int longind = -1;

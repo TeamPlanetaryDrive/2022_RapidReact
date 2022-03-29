@@ -58,17 +58,17 @@ public class RobotMap {
         public static int LIFT_CHANNEL = 2;
         //outlining spintake motors, placeholder channels
         public static int SPINTAKE_CHANNEL_L = 0;
-        public static int SPINTAKE_CHANNEL_R = 1;
+        public static int SPINTAKE_CHANNEL_R = 6;
 
         //public static int LEFT_SHOOTER_CHANNEL = 4;
 
         //public static int RIGHT_SHOOTER_CHANNEL = 5;
 
-        public static int SHOOTER_AIM_CHANNEL = 6;
+        public static int SHOOTER_AIM_CHANNEL = 1;
         
                         // enconder channels
         // not final yet
-        public static int DRIVETRAIN_ENCODER_CHANNEL_L_A = 0, DRIVETRAIN_ENCODER_CHANNEL_L_B = 1, DRIVETRAIN_ENCODER_CHANNEL_R_A = 2, DRIVETRAIN_ENCODER_CHANNEL_R_B = 3;
+        // public static int DRIVETRAIN_ENCODER_CHANNEL_L_A = 0, DRIVETRAIN_ENCODER_CHANNEL_L_B = 1, DRIVETRAIN_ENCODER_CHANNEL_R_A = 2, DRIVETRAIN_ENCODER_CHANNEL_R_B = 3;
         public static int SHOOTER_ENCODER_CHANNEL_A = 0, SHOOTER_ENCODER_CHANNEL_B = 1;
 
         // HARDWARE

@@ -9,10 +9,11 @@ public class turnToBall extends CommandBase {
 
     NetworkTableEntry contourInfo;
     boolean finish;
+    double[] position;
     
     public turnToBall() {
         addRequirements(Robot.Cameras, Robot.Drive);
-        contourInfo = NetworkTableInstance.getDefault().getTable("datatable").getEntry("Ball Contours");
+        contourInfo = NetworkTableInstance.getDefault().getTable("datatable").getEntry("balls");
     }
 
     public void initialize() {
@@ -25,6 +26,7 @@ public class turnToBall extends CommandBase {
         if(Robot.Cameras.countBall < 10) {
             return;
         }
+        position = contourInfo.getDoubleArray(new double[] {-1, -1});
     }
 
     public boolean isFinished() {
