@@ -18,9 +18,8 @@ public class intakeDTF extends CommandBase {
     }
 
     public void execute() { 
-        Robot.Spintake.spin(1.4,1.4);
+        Robot.Spintake.spin(2.5,2.5);
         frameCount++;
-
     }
 
     public boolean isFinished() {

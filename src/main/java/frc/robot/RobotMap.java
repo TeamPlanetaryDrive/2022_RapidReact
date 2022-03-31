@@ -12,12 +12,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 */
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
-import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.XboxController;
 //import edu.wpi.first.wpilibj.PneumaticsModuleType;
 // import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -55,7 +51,6 @@ public class RobotMap {
         public static int LEFT_MOTOR_CHANNEL = 8, RIGHT_MOTOR_CHANNEL = 9;
 
         // motor based
-        public static int LIFT_CHANNEL = 2;
         //outlining spintake motors, placeholder channels
         public static int SPINTAKE_CHANNEL_L = 0;
         public static int SPINTAKE_CHANNEL_R = 6;

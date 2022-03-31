@@ -8,6 +8,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.*;
+import frc.robot.commands.Intake.dropShooter;
 import frc.robot.commands.Intake.intakeCBT;
 import frc.robot.commands.Intake.intakeDTF;
 import frc.robot.commands.vision.*;
@@ -24,12 +25,12 @@ public class OI {
   public OI() {
     RobotMap.aButton.whenPressed(new turnToGoal());    
     RobotMap.bButton.whenPressed(new testCommand());
-    //RobotMap.xButton.whenPressed(new turnToBall());
-    //RobotMap.yButton.whenPressed(new climb());
+    RobotMap.xButton.whenPressed(new dropShooter());
+    //RobotMap.yButton.whenPressed(new climb()); 
     RobotMap.startButton.whenPressed(new setLift(true));
     RobotMap.backButton.whenPressed(new setLift(false));
-    RobotMap.leftBumper.whenPressed(new intakeDTF(10));
-    RobotMap.rightBumper.whenPressed(new SequentialCommandGroup(new intakeCBT(5), new intakeDTF(20)));
+    RobotMap.leftBumper.whenPressed(new SequentialCommandGroup(new intakeCBT(2), new intakeDTF(30)));
+    //RobotMap.rightBumper.whenPressed(new SequentialCommandGroup(new intakeCBT(5), new intakeDTF(20)));
     
     RobotMap.leftStickButton.whenHeld(new movement(LEFT_STICK_PRESS));
     RobotMap.rightStickButton.whenHeld(new movement(RIGHT_STICK_PRESS));

@@ -19,20 +19,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opencv.core.*;
-import org.opencv.features2d.SimpleBlobDetector;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 import org.opencv.imgcodecs.Imgcodecs;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.util.Color;
 
 //use for the guidence through the camera
 public class Vision extends SubsystemBase {
 
 	CvSink cvSink;
-	NetworkTableEntry ballEntry, contourInfo, goalBlurEntry;
+	NetworkTableEntry ballEntry, contourInfo;
 	final int FRAME_AVG = 12;
 	double slopeavg = 0;
 	
@@ -55,11 +53,10 @@ public class Vision extends SubsystemBase {
       	NetworkTable table = inst.getTable("datatable");
       	ballEntry = table.getEntry("balls");
 		contourInfo = table.getEntry("Contour Positions rawr xd nya~");
-		goalBlurEntry = table.getEntry("blrur");
 
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
-		Mat contProc = new Mat(), contOut = new Mat(), ballProc = new Mat(), ballProc2 = new Mat();
+		Mat contProc = new Mat(), contOut = new Mat(), ballProc = new Mat(), ballProc2 = new Mat(), guido = new Mat();
 
 		// create vision thread and camera feed
 		new Thread(() -> {
@@ -69,9 +66,10 @@ public class Vision extends SubsystemBase {
 			cvSink = CameraServer.getVideo();
 			CvSource balling = CameraServer.putVideo("We Balling", RobotMap.CAM_WID, RobotMap.CAM_HEI);
 			CvSource contouring = CameraServer.putVideo("We Contouring", RobotMap.CAM_WID, RobotMap.CAM_HEI);
+			CvSource guiding = CameraServer.putVideo("We Guiding", RobotMap.CAM_WID, RobotMap.CAM_HEI);
 
 			while(!Thread.interrupted()) {
-			  if (cvSink.grabFrame(contProc) == 0 || cvSink.grabFrame(ballProc) == 0) {
+			  if (cvSink.grabFrame(contProc) == 0 || cvSink.grabFrame(ballProc) == 0 || cvSink.grabFrame(guido) == 0) {
 				continue;
 			  }
 			  
@@ -91,6 +89,7 @@ public class Vision extends SubsystemBase {
 			  } else {
 				  countGoal = 0;
 			  }
+			  guiding.putFrame(showGuide(guido));
 			}
 		  }).start();
   	}
@@ -108,6 +107,12 @@ public class Vision extends SubsystemBase {
 		Size s = new Size(size, size);
 		return new Mat(s,CvType.CV_8UC1,k);
 	}
+
+	public Mat showGuide(Mat guido){
+		Imgproc.line(guido, new Point(RobotMap.CAM_WID/2,0), new Point(RobotMap.CAM_WID/2,RobotMap.CAM_HEI), new Scalar(0,255,0), 5);
+		return guido;
+	}
+
 	public Mat ballBall(Mat out, Mat out2, boolean red) {
 		Imgproc.cvtColor(out, out, Imgproc.COLOR_BGR2HLS);
 		if(red){
@@ -284,17 +289,6 @@ public class Vision extends SubsystemBase {
 		}
 		Core.transpose(contout, contout);
 		
-		// check for blurred goal as a rotated rect
-		boolean blurSpotted = false;
-		for(RotatedRect rr : rects){
-			double ratio = Math.max(rr.size.width,rr.size.height)/Math.min(rr.size.width,rr.size.height);
-			if(ratio > 5){
-				blurSpotted = true;
-			}
-			goalBlurEntry.setDouble(ratio);
-		}
-		//goalBlurEntry.setBoolean(blurSpotted);
-
 		return contout;
 		
 	}
