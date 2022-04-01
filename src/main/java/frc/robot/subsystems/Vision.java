@@ -37,7 +37,7 @@ public class Vision extends SubsystemBase {
 	ArrayList<MatOfPoint> contours;
 	Mat hierarchy;
 
-	public boolean doBall = false, doGoal = false; //among us dababy 
+	public boolean doBall = false, doGoal = false; //among us dababy sus? - that guy from 3140
 	public int countBall = 0, countGoal = 0;
 
 	//scalar constants

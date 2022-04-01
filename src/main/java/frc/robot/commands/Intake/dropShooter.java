@@ -14,7 +14,7 @@ public class dropShooter extends CommandBase {
     }
 
     public void execute() {
-        Robot.Gun.rotate(-.35);
+        Robot.Gun.rotate(-.475);
     }
 
     public boolean isFinished() {

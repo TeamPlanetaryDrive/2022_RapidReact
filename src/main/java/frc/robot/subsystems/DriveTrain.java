@@ -37,6 +37,7 @@ public class DriveTrain extends SubsystemBase {
   private double stationaryTolerance = 0.05;
   Victor lMotor, rMotor;
   public Encoder encoderL, encoderR;
+  double yk,xk; // movement decay
 
   public DriveTrain() {
     // calls the subsystem to let it know that it needs to be called as a subsystem
@@ -129,7 +130,34 @@ public class DriveTrain extends SubsystemBase {
   public void periodic(){
     int mode = ARCADE;
     if(mode == ARCADE){
-      robotDrive.arcadeDrive(-RobotMap.XController.getLeftY(),RobotMap.XController.getLeftX());
+      //double yax = -Math.copySign(Math.pow(RobotMap.XController.getLeftY(), 2), RobotMap.XController.getLeftY());
+      //double xax = Math.copySign(Math.pow(RobotMap.XController.getLeftX(), 2), RobotMap.XController.getLeftX());
+      double yax = -RobotMap.XController.getLeftY();
+      double xax = RobotMap.XController.getLeftX();
+      if(Math.abs(yax)>0.2){
+        if(Math.abs(yk)>=Math.abs(yax)){
+          yk = yax;  
+        }else{
+          yk += Math.signum(yax) * .05;
+        }
+      }else if(Math.abs(yk)>.1){
+        yk -= Math.signum(yk) * .05;
+      }else{
+        yk = 0;
+      }
+      if(Math.abs(xax)>0.2){
+        if(Math.abs(xk)>=Math.abs(xax)){
+          xk = xax;  
+        }else{
+          xk += Math.signum(xax) * .05;
+        }
+      }else if(Math.abs(xk)>.1){
+        xk -= Math.signum(xk) * .05;
+      }else{
+        xk = 0;
+      }
+
+      robotDrive.arcadeDrive(yk,xk);
       //m_drive.curvatureDrive(-RobotMap.XController.getLeftY(),RobotMap.XController.getLeftX(), RobotMap.XController.getLeftStickButtonPressed());
     }
     else if(!(RobotMap.XController.getLeftStickButtonPressed() || RobotMap.XController.getRightStickButtonPressed() )) {
@@ -137,6 +165,4 @@ public class DriveTrain extends SubsystemBase {
       drive(speeds[0], speeds[1]);
     }
   }
-
-
 }

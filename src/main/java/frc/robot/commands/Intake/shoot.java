@@ -1,4 +1,4 @@
-/*package frc.robot.commands.Intake;
+package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
@@ -11,7 +11,7 @@ public class shoot extends CommandBase {
     final double GOAL_HEI = 8.666667, ROBO_HEI = 4;
     final double H = GOAL_HEI - ROBO_HEI;
     final double G = 32.17;
-    double d = 20;
+    double d = 15;
 
     public shoot() {
         addRequirements(Robot.Gun, Robot.Spintake);
@@ -37,4 +37,4 @@ public class shoot extends CommandBase {
 
     }
 
-}*/
+}

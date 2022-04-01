@@ -48,7 +48,7 @@ public class RobotMap {
         // 2019 bot
         //public static int LEFT_MOTOR_CHANNEL = 0, RIGHT_MOTOR_CHANNEL = 1;
         // 2022 bot
-        public static int LEFT_MOTOR_CHANNEL = 8, RIGHT_MOTOR_CHANNEL = 9;
+        public static int LEFT_MOTOR_CHANNEL = 9, RIGHT_MOTOR_CHANNEL = 8;
 
         // motor based
         //outlining spintake motors, placeholder channels

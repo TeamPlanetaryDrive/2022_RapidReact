@@ -9,17 +9,17 @@ public class Shooter extends SubsystemBase{
 
     private Talon motorC;
 
-    //public Encoder shooterEnc;
+    public Encoder shooterEnc;
 
     public Shooter() {
         motorC = new Talon(RobotMap.SHOOTER_AIM_CHANNEL);
-        //shooterEnc = new Encoder(RobotMap.SHOOTER_ENCODER_CHANNEL_A, RobotMap.SHOOTER_ENCODER_CHANNEL_B);
-        //shooterEnc.setDistancePerPulse(((8/3)*Math.PI)/256.); //[n/q] sets to distance of n every q pulses
-        //shooterEnc.reset();
+        shooterEnc = new Encoder(RobotMap.SHOOTER_ENCODER_CHANNEL_A, RobotMap.SHOOTER_ENCODER_CHANNEL_B);
+        shooterEnc.setDistancePerPulse(((8/3)*Math.PI)/256.); //[n/q] sets to distance of n every q pulses
+        shooterEnc.reset();
     }
 
     public void rotate(double central) {
-        motorC.set(central);
+        motorC.set(1.1*central);
     }
 
     public double getRotateSpeeds(){
