@@ -38,6 +38,7 @@ public class DriveTrain extends SubsystemBase {
   Victor lMotor, rMotor;
   public Encoder encoderL, encoderR;
   double yk,xk; // movement decay
+  double k = 0.05;
 
   public DriveTrain() {
     // calls the subsystem to let it know that it needs to be called as a subsystem
@@ -134,25 +135,25 @@ public class DriveTrain extends SubsystemBase {
       //double xax = Math.copySign(Math.pow(RobotMap.XController.getLeftX(), 2), RobotMap.XController.getLeftX());
       double yax = -RobotMap.XController.getLeftY();
       double xax = RobotMap.XController.getLeftX();
-      if(Math.abs(yax)>0.2){
-        if(Math.abs(yk)>=Math.abs(yax)){
+      if(Math.abs(yax)>0.1){
+        if(Math.abs(yk)>=Math.abs(yax) && Math.signum(yk)==Math.signum(yax)){
           yk = yax;  
         }else{
-          yk += Math.signum(yax) * .05;
+          yk += Math.signum(yax-yk) * k;
         }
-      }else if(Math.abs(yk)>.1){
-        yk -= Math.signum(yk) * .05;
+      }else if(Math.abs(yk)>2*k){
+        yk -= Math.signum(yk) * k;
       }else{
         yk = 0;
       }
-      if(Math.abs(xax)>0.2){
-        if(Math.abs(xk)>=Math.abs(xax)){
+      if(Math.abs(xax)>0.1){
+        if(Math.abs(xk)>=Math.abs(xax) && Math.signum(xk)==Math.signum(xax)){
           xk = xax;  
         }else{
-          xk += Math.signum(xax) * .05;
+          xk += Math.signum(xax-xk) * k * 2;
         }
-      }else if(Math.abs(xk)>.1){
-        xk -= Math.signum(xk) * .05;
+      }else if(Math.abs(xk)>4*k){
+        xk -= Math.signum(xk) * k * 2;
       }else{
         xk = 0;
       }
